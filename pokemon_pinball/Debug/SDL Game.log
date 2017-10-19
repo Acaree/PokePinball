@@ -1,0 +1,11 @@
+﻿  ModulePhysics.cpp
+c:\users\alex\desktop\pokemon_pinball\modulephysics.cpp(173): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\alex\desktop\pokemon_pinball\modulephysics.cpp(174): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\alex\desktop\pokemon_pinball\modulephysics.cpp(217): warning C4018: '<': no coinciden signed/unsigned
+c:\users\alex\desktop\pokemon_pinball\modulephysics.cpp(251): warning C4244: 'argumento': conversión de 'int' a 'float32'; posible pérdida de datos
+c:\users\alex\desktop\pokemon_pinball\modulephysics.cpp(396): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\alex\desktop\pokemon_pinball\modulephysics.cpp(397): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\alex\desktop\pokemon_pinball\modulephysics.cpp(403): warning C4244: 'return': conversión de 'float32' a 'int'; posible pérdida de datos
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\cmath(113): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  SDL Game.vcxproj -> C:\Users\Alex\Desktop\pokemon_pinball\Debug\2D Physics - class 4.exe
+  SDL Game.vcxproj -> C:\Users\Alex\Desktop\pokemon_pinball\Debug\2D Physics - class 4.pdb (Partial PDB)
