@@ -495,7 +495,180 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 }
 
 void ModulePhysics::CreateMapObstacles() {
-	
+
 	//wall slowbro
+
+	int slowbro_pixels[118]{
+		154, 109,
+		142, 119,
+		127, 134,
+		115, 150,
+		98, 177,
+		92, 194,
+		84, 219,
+		79, 255,
+		74, 278,
+		74, 396,
+		78, 418,
+		85, 457,
+		93, 473,
+		103, 498,
+		114, 515,
+		122, 518,
+		126, 524,
+		136, 524,
+		147, 520,
+		159, 514,
+		167, 507,
+		167, 492,
+		163, 477,
+		160, 466,
+		154, 455,
+		157, 449,
+		160, 439,
+		167, 429,
+		177, 421,
+		191, 414,
+		204, 407,
+		218, 402,
+		232, 395,
+		245, 388,
+		245, 378,
+		109, 378,
+		109, 337,
+		136, 330,
+		164, 330,
+		163, 334,
+		191, 334,
+		191, 337,
+		218, 337,
+		218, 340,
+		245, 340,
+		245, 327,
+		237, 323,
+		218, 313,
+		196, 302,
+		176, 292,
+		162, 286,
+		152, 279,
+		142, 266,
+		139, 255,
+		140, 245,
+		147, 217,
+		157, 197,
+		164, 187,
+		164, 109,
+	};
+
+	b2Vec2 p[59];
+
+	for (uint i = 0; i < 59; i++)
+	{
+		p[i].x = PIXEL_TO_METERS(slowbro_pixels[2 * i]);
+		p[i].y = PIXEL_TO_METERS(slowbro_pixels[2 * i + 1]);
+	}
+
+
+	b2BodyDef body;
+	body.type = b2_staticBody;
+	body.position.Set(0, 0);
+
+	b2Body* pinball_world = world->CreateBody(&body);
+
+	b2ChainShape shape;
+	shape.CreateChain(p, 59);
+
+
+
+	b2FixtureDef fixture_world;
+	fixture_world.shape = &shape;
+	pinball_world->CreateFixture(&fixture_world);
+	
+		
+	// wall cloyster
+
+		int cloyster_pixels[114]{
+			381, 108,
+			381, 188,
+			387, 198,
+			395, 211,
+			398, 218,
+			401, 231,
+			405, 244,
+			405, 255,
+			398, 272,
+			381, 286,
+			368, 293,
+			354, 300,
+			335, 309,
+			313, 320,
+			300, 327,
+			299, 340,
+			327, 340,
+			327, 337,
+			354, 337,
+			354, 334,
+			381, 334,
+			381, 330,
+			408, 330,
+			436, 327,
+			436, 378,
+			300, 378,
+			300, 389,
+			314, 394,
+			326, 401,
+			339, 407,
+			346, 412,
+			361, 419,
+			374, 425,
+			381, 432,
+			388, 448,
+			388, 455,
+			381, 477,
+			378, 494,
+			378, 507,
+			385, 514,
+			398, 521,
+			408, 524,
+			419, 524,
+			428, 517,
+			439, 503,
+			449, 483,
+			459, 455,
+			465, 419,
+			470, 394,
+			470, 279,
+			463, 234,
+			453, 194,
+			438, 164,
+			425, 143,
+			412, 130,
+			401, 119,
+			391, 109
+	};
+
+	b2Vec2 p2[57];
+
+	for (uint i = 0; i < 57; i++)
+	{
+		p2[i].x = PIXEL_TO_METERS(cloyster_pixels[2 * i]);
+		p2[i].y = PIXEL_TO_METERS(cloyster_pixels[2 * i + 1]);
+	}
+
+
+	b2BodyDef body2;
+	body2.type = b2_staticBody;
+	body2.position.Set(0, 0);
+
+	b2Body* pinball_world2 = world->CreateBody(&body2);
+
+	b2ChainShape shape2;
+	shape2.CreateChain(p2, 57);
+
+
+
+	b2FixtureDef fixture_world2;
+	fixture_world2.shape = &shape2;
+	pinball_world2->CreateFixture(&fixture_world2);
 	
 }
