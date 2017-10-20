@@ -14,3 +14,9 @@ pokemon_pinball/.vs/2D Physics/v15/ipch/AutoPCH/446560495e6355db/MODULESCENEINTR
 *.log
 *.idb
 *.pdb
+*.log
+*.tlog
+*.tlog
+*.tlog
+*.db
+pokemon_pinball/.vs/2D Physics/v15/.suo
