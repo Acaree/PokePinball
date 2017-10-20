@@ -39,8 +39,10 @@ public:
 
 	bool Start();
 	update_status PreUpdate();
+	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
+	void CreateMapObstacles();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
@@ -51,6 +53,8 @@ public:
 	void BeginContact(b2Contact* contact);
 
 private:
+
+	SDL_Texture* map;
 	b2Body* body_clicked = nullptr;
 	bool debug;
 	b2World* world;

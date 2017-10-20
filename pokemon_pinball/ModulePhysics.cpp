@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "ModulePhysics.h"
+#include "ModuleTextures.h"
 #include "p2Point.h"
 #include "math.h"
 
@@ -35,56 +36,110 @@ bool ModulePhysics::Start()
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
-	int pinball_map[82] = {
-		6, 5,
-		6, 283,
-		61, 282,
-		27, 260,
-		27, 266,
-		14, 266,
-		13, 214,
-		20, 201,
-		29, 199,
-		29, 168,
-		17, 145,
-		12, 117,
-		12, 84,
-		16, 61,
-		35, 29,
-		72, 9,
-		95, 9,
-		125, 13,
-		150, 27,
-		169, 49,
-		181, 76,
-		181, 282,
-		167, 282,
-		166, 85,
-		162, 67,
-		152, 51,
-		157, 68,
-		160, 92,
-		160, 114,
-		156, 143,
-		142, 170,
-		143, 200,
-		153, 203,
-		158, 213,
-		158, 266,
-		146, 266,
-		144, 260,
-		111, 284,
-		197, 284,
-		197, 4,
-		6, 5
+	int pinball_map[190] = {
+		0, 0,
+		0, 945,
+		191, 945,
+		179, 934,
+		157, 921,
+		133, 905,
+		115, 892,
+		95, 878,
+		79, 867,
+		72, 867,
+		72, 888,
+		28, 888,
+		28, 707,
+		39, 686,
+		51, 676,
+		64, 670,
+		82, 667,
+		82, 554,
+		68, 535,
+		61, 521,
+		51, 505,
+		42, 486,
+		34, 457,
+		31, 435,
+		27, 409,
+		23, 373,
+		22, 295,
+		28, 265,
+		31, 237,
+		34, 218,
+		40, 191,
+		50, 165,
+		62, 144,
+		74, 121,
+		91, 102,
+		107, 87,
+		122, 75,
+		140, 61,
+		164, 47,
+		189, 36,
+		211, 32,
+		246, 22,
+		343, 22,
+		369, 27,
+		394, 32,
+		415, 39,
+		438, 49,
+		459, 62,
+		482, 76,
+		498, 89,
+		522, 113,
+		546, 141,
+		560, 165,
+		572, 188,
+		581, 212,
+		590, 239,
+		595, 253,
+		595, 945,
+		548, 945,
+		548, 272,
+		540, 238,
+		533, 218,
+		524, 195,
+		516, 179,
+		506, 166,
+		497, 153,
+		493, 153,
+		493, 164,
+		498, 174,
+		504, 191,
+		511, 218,
+		517, 266,
+		521, 300,
+		521, 375,
+		517, 409,
+		510, 457,
+		500, 488,
+		490, 511,
+		481, 528,
+		463, 554,
+		463, 667,
+		487, 672,
+		500, 681,
+		507, 687,
+		511, 697,
+		515, 706,
+		517, 711,
+		517, 888,
+		473, 888,
+		473, 867,
+		467, 867,
+		354, 942,
+		354, 945,
+		654, 945,
+		654, 0
 	};
 
 
 
+	
+	b2Vec2 p[95];
 
-	b2Vec2 p[41];
-
-	for (uint i = 0; i < 41; i++)
+	for (uint i = 0; i < 95; i++)
 	{
 		p[i].x = PIXEL_TO_METERS(pinball_map[2 * i]);
 		p[i].y = PIXEL_TO_METERS(pinball_map[2 * i + 1]);
@@ -98,13 +153,20 @@ bool ModulePhysics::Start()
 	b2Body* pinball_world = world->CreateBody(&body);
 	
 	b2ChainShape shape;
-	shape.CreateChain(p,41);
+	shape.CreateChain(p,95);
 	
 	
 
 	b2FixtureDef fixture_world;
 	fixture_world.shape = &shape;
 	pinball_world->CreateFixture(&fixture_world);
+	
+
+	
+	map = App->textures->Load("pinball/Map.png");
+	
+
+	CreateMapObstacles();
 	
 	return true;
 }
@@ -123,6 +185,14 @@ update_status ModulePhysics::PreUpdate()
 				pb1->listener->OnCollision(pb1, pb2);
 		}
 	}
+
+
+	return UPDATE_CONTINUE;
+}
+
+update_status ModulePhysics::Update() {
+
+	App->renderer->Blit(map, 0, 0, NULL, 0, 0);
 
 	return UPDATE_CONTINUE;
 }
@@ -246,6 +316,8 @@ update_status ModulePhysics::PostUpdate()
 	if(!debug)
 		return UPDATE_CONTINUE;
 
+
+	
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
 	b2Vec2 mouse_position(App->input->GetMouseX(), App->input->GetMouseY());
@@ -330,6 +402,8 @@ update_status ModulePhysics::PostUpdate()
 			}
 		}
 	}
+
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -418,4 +492,10 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 
 	if(physB && physB->listener != NULL)
 		physB->listener->OnCollision(physB, physA);
+}
+
+void ModulePhysics::CreateMapObstacles() {
+	
+	//wall slowbro
+	
 }
