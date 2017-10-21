@@ -54,6 +54,7 @@ public:
 
 private:
 
+	b2BodyDef dook;
 	SDL_Texture* map;
 	b2Body* body_clicked = nullptr;
 	bool debug;

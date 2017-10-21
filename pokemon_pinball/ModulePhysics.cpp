@@ -133,7 +133,42 @@ bool ModulePhysics::Start()
 
 	
 	map = App->textures->Load("pinball/Map.png");
-	
+
+	//dook
+
+
+	dook.type = b2_dynamicBody;
+	dook.position.Set(PIXEL_TO_METERS(571), PIXEL_TO_METERS(854));
+
+	b2Body* d = world->CreateBody(&dook);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(45) * 0.5f, PIXEL_TO_METERS(6) * 0.5f);
+
+	b2FixtureDef dook1;
+	dook1.shape = &box;
+	dook1.density = 0.5f;
+
+	d->CreateFixture(&dook1);
+
+	b2PrismaticJointDef bouncy;
+	b2PrismaticJoint* bounzou;
+	/*bouncy.bodyA = d;
+	bouncy.bodyB = ground;
+	bouncy.collideConnected = false;
+	bouncy.localAxisA.Set(0, 1);
+	bouncy.localAnchorA.Set(PIXEL_TO_METERS(22) * 0.5f,PIXEL_TO_METERS(1));
+	bouncy.localAnchorB.Set(PIXEL_TO_METERS(270), PIXEL_TO_METERS(450));*/
+
+	bouncy.Initialize(ground, d, b2Vec2(PIXEL_TO_METERS(272), PIXEL_TO_METERS(20)), b2Vec2(0, 1));
+	bouncy.lowerTranslation = 0;
+	bouncy.upperTranslation = 1;
+	bouncy.enableLimit = true;
+	bouncy.maxMotorForce = 100;
+	bouncy.motorSpeed = 10.0f;
+	bouncy.enableMotor = true;	
+
+	bounzou = (b2PrismaticJoint*)world->CreateJoint(&bouncy);
+
 
 	CreateMapObstacles();
 	
@@ -163,7 +198,10 @@ update_status ModulePhysics::Update() {
 
 	App->renderer->Blit(map, 0, 0, NULL, 0, 0);
 
-	return UPDATE_CONTINUE;
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		dook.position.Set(PIXEL_TO_METERS(571), PIXEL_TO_METERS(1000));
+
+ 	return UPDATE_CONTINUE;
 }
 
 PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
@@ -787,4 +825,8 @@ void ModulePhysics::CreateMapObstacles() {
 		b2FixtureDef fixture_world7;
 		fixture_world7.shape = &shape7;
 		pinball_world7->CreateFixture(&fixture_world7);
+
+
+
+
 }
