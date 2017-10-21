@@ -1,11 +1,11 @@
 ﻿  ModulePhysics.cpp
-c:\users\alex\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(243): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\alex\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(244): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\alex\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(287): warning C4018: '<': no coinciden signed/unsigned
-c:\users\alex\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(323): warning C4244: 'argumento': conversión de 'int' a 'float32'; posible pérdida de datos
-c:\users\alex\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(470): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\alex\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(471): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\alex\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(477): warning C4244: 'return': conversión de 'float32' a 'int'; posible pérdida de datos
+c:\users\sergio\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(212): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\sergio\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(213): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\sergio\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(256): warning C4018: '<': no coinciden signed/unsigned
+c:\users\sergio\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(292): warning C4244: 'argumento': conversión de 'int' a 'float32'; posible pérdida de datos
+c:\users\sergio\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(439): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\sergio\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(440): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\sergio\documents\github\pokepinball\pokemon_pinball\modulephysics.cpp(446): warning C4244: 'return': conversión de 'float32' a 'int'; posible pérdida de datos
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\cmath(113): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  SDL Game.vcxproj -> C:\Users\Alex\Documents\GitHub\PokePinball\pokemon_pinball\Debug\2D Physics - class 4.exe
-  SDL Game.vcxproj -> C:\Users\Alex\Documents\GitHub\PokePinball\pokemon_pinball\Debug\2D Physics - class 4.pdb (Partial PDB)
+  SDL Game.vcxproj -> C:\Users\Sergio\Documents\GitHub\PokePinball\pokemon_pinball\Debug\2D Physics - class 4.exe
+  SDL Game.vcxproj -> C:\Users\Sergio\Documents\GitHub\PokePinball\pokemon_pinball\Debug\2D Physics - class 4.pdb (Partial PDB)

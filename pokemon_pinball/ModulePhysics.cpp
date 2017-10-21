@@ -36,110 +36,79 @@ bool ModulePhysics::Start()
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
-	int pinball_map[190] = {
+	int pinball_map[134] = {
 		0, 0,
 		0, 945,
 		191, 945,
-		179, 934,
-		157, 921,
-		133, 905,
-		115, 892,
-		95, 878,
-		79, 867,
-		72, 867,
-		72, 888,
-		28, 888,
-		28, 707,
-		39, 686,
-		51, 676,
-		64, 670,
-		82, 667,
-		82, 554,
-		68, 535,
-		61, 521,
-		51, 505,
-		42, 486,
-		34, 457,
-		31, 435,
-		27, 409,
-		23, 373,
-		22, 295,
-		28, 265,
-		31, 237,
-		34, 218,
-		40, 191,
-		50, 165,
-		62, 144,
-		74, 121,
-		91, 102,
-		107, 87,
-		122, 75,
-		140, 61,
-		164, 47,
-		189, 36,
-		211, 32,
-		246, 22,
-		343, 22,
-		369, 27,
-		394, 32,
-		415, 39,
-		438, 49,
-		459, 62,
-		482, 76,
-		498, 89,
-		522, 113,
-		546, 141,
-		560, 165,
-		572, 188,
-		581, 212,
-		590, 239,
-		595, 253,
+		75, 869,
+		75, 891,
+		24, 891,
+		24, 701,
+		32, 684,
+		50, 666,
+		68, 660,
+		82, 659,
+		82, 555,
+		54, 517,
+		39, 487,
+		25, 435,
+		21, 374,
+		21, 292,
+		26, 232,
+		37, 182,
+		55, 140,
+		74, 113,
+		106, 77,
+		131, 57,
+		153, 45,
+		188, 28,
+		245, 21,
+		344, 21,
+		404, 34,
+		439, 48,
+		464, 62,
+		503, 91,
+		539, 127,
+		562, 162,
+		588, 221,
+		595, 252,
 		595, 945,
 		548, 945,
 		548, 272,
-		540, 238,
-		533, 218,
-		524, 195,
-		516, 179,
-		506, 166,
-		497, 153,
-		493, 153,
-		493, 164,
-		498, 174,
-		504, 191,
-		511, 218,
-		517, 266,
-		521, 300,
-		521, 375,
-		517, 409,
-		510, 457,
-		500, 488,
-		490, 511,
-		481, 528,
+		544, 253,
+		536, 228,
+		524, 198,
+		507, 170,
+		494, 153,
+		494, 163,
+		506, 190,
+		511, 215,
+		517, 241,
+		522, 282,
+		524, 300,
+		524, 374,
+		521, 408,
+		516, 436,
+		509, 462,
+		503, 487,
+		491, 511,
 		463, 554,
-		463, 667,
-		487, 672,
-		500, 681,
-		507, 687,
-		511, 697,
-		515, 706,
-		517, 711,
-		517, 888,
-		473, 888,
-		473, 867,
-		467, 867,
-		354, 942,
+		463, 658,
+		477, 661,
+		494, 666,
+		510, 678,
+		521, 701,
+		521, 891,
+		470, 891,
+		470, 870,
 		354, 945,
-		654, 945,
-		654, 0
+		653, 945,
+		653, 0 
 	};
-
-
-
 	
-	b2Vec2 p[95];
+	b2Vec2 p[67];
 
-	for (uint i = 0; i < 95; i++)
+	for (uint i = 0; i < 67; i++)
 	{
 		p[i].x = PIXEL_TO_METERS(pinball_map[2 * i]);
 		p[i].y = PIXEL_TO_METERS(pinball_map[2 * i + 1]);
@@ -153,7 +122,7 @@ bool ModulePhysics::Start()
 	b2Body* pinball_world = world->CreateBody(&body);
 	
 	b2ChainShape shape;
-	shape.CreateChain(p,95);
+	shape.CreateChain(p,67);
 	
 	
 
@@ -498,71 +467,45 @@ void ModulePhysics::CreateMapObstacles() {
 
 	//wall slowbro
 
-	int slowbro_pixels[118]{
-		154, 109,
-		142, 119,
-		127, 134,
-		115, 150,
-		98, 177,
-		92, 194,
-		84, 219,
-		79, 255,
-		74, 278,
-		74, 396,
-		78, 418,
-		85, 457,
-		93, 473,
-		103, 498,
-		114, 515,
-		122, 518,
-		126, 524,
-		136, 524,
-		147, 520,
-		159, 514,
-		167, 507,
-		167, 492,
-		163, 477,
-		160, 466,
-		154, 455,
-		157, 449,
-		160, 439,
-		167, 429,
-		177, 421,
-		191, 414,
-		204, 407,
-		218, 402,
-		232, 395,
-		245, 388,
-		245, 378,
-		109, 378,
-		109, 337,
-		136, 330,
-		164, 330,
-		163, 334,
-		191, 334,
-		191, 337,
-		218, 337,
-		218, 340,
-		245, 340,
-		245, 327,
-		237, 323,
-		218, 313,
-		196, 302,
-		176, 292,
-		162, 286,
-		152, 279,
-		142, 266,
-		139, 255,
-		140, 245,
-		147, 217,
-		157, 197,
-		164, 187,
-		164, 109,
+	int slowbro_pixels[66]{
+		154, 111,
+		122, 143,
+		102, 177,
+		88, 216,
+		78, 279,
+		78, 388,
+		84, 431,
+		97, 470,
+		115, 506,
+		123, 518,
+		131, 524,
+		165, 508,
+		165, 492,
+		157, 468,
+		153, 441,
+		170, 415,
+		199, 401,
+		233, 384,
+		243, 383,
+		242, 379,
+		108, 380,
+		110, 332,
+		244, 329,
+		217, 316,
+		175, 296,
+		161, 288,
+		148, 276,
+		138, 261,
+		135, 237,
+		142, 211,
+		155, 187,
+		161, 178,
+		161, 111
 	};
 
-	b2Vec2 p[59];
+	b2Vec2 p[33];
 
-	for (uint i = 0; i < 59; i++)
+	for (uint i = 0; i < 33; i++)
 	{
 		p[i].x = PIXEL_TO_METERS(slowbro_pixels[2 * i]);
 		p[i].y = PIXEL_TO_METERS(slowbro_pixels[2 * i + 1]);
@@ -576,7 +519,7 @@ void ModulePhysics::CreateMapObstacles() {
 	b2Body* pinball_world = world->CreateBody(&body);
 
 	b2ChainShape shape;
-	shape.CreateChain(p, 59);
+	shape.CreateChain(p, 33);
 
 
 
@@ -587,69 +530,49 @@ void ModulePhysics::CreateMapObstacles() {
 		
 	// wall cloyster
 
-		int cloyster_pixels[114]{
-			381, 108,
-			381, 188,
-			387, 198,
-			395, 211,
-			398, 218,
-			401, 231,
-			405, 244,
-			405, 255,
-			398, 272,
-			381, 286,
-			368, 293,
-			354, 300,
-			335, 309,
-			313, 320,
-			300, 327,
-			299, 340,
-			327, 340,
-			327, 337,
-			354, 337,
-			354, 334,
-			381, 334,
-			381, 330,
-			408, 330,
-			436, 327,
-			436, 378,
-			300, 378,
-			300, 389,
-			314, 394,
-			326, 401,
-			339, 407,
-			346, 412,
-			361, 419,
-			374, 425,
-			381, 432,
-			388, 448,
-			388, 455,
-			381, 477,
-			378, 494,
-			378, 507,
-			385, 514,
-			398, 521,
-			408, 524,
-			419, 524,
-			428, 517,
-			439, 503,
-			449, 483,
-			459, 455,
-			465, 419,
-			470, 394,
-			470, 279,
-			463, 234,
-			453, 194,
-			438, 164,
-			425, 143,
-			412, 130,
-			401, 119,
-			391, 109
+		int cloyster_pixels[74]{
+			384, 112,
+			384, 181,
+			395, 198,
+			405, 225,
+			409, 254,
+			396, 277,
+			375, 291,
+			346, 306,
+			322, 319,
+			300, 329,
+			435, 328,
+			435, 379,
+			302, 379,
+			312, 384,
+			331, 393,
+			365, 409,
+			378, 418,
+			388, 433,
+			393, 446,
+			391, 456,
+			383, 478,
+			380, 494,
+			379, 508,
+			410, 523,
+			420, 519,
+			426, 514,
+			437, 494,
+			453, 453,
+			463, 410,
+			466, 386,
+			465, 278,
+			458, 232,
+			447, 191,
+			434, 163,
+			415, 137,
+			398, 119,
+			389, 112
 	};
 
-	b2Vec2 p2[57];
+	b2Vec2 p2[37];
 
-	for (uint i = 0; i < 57; i++)
+	for (uint i = 0; i < 37; i++)
 	{
 		p2[i].x = PIXEL_TO_METERS(cloyster_pixels[2 * i]);
 		p2[i].y = PIXEL_TO_METERS(cloyster_pixels[2 * i + 1]);
@@ -663,12 +586,205 @@ void ModulePhysics::CreateMapObstacles() {
 	b2Body* pinball_world2 = world->CreateBody(&body2);
 
 	b2ChainShape shape2;
-	shape2.CreateChain(p2, 57);
+	shape2.CreateChain(p2, 37);
 
 
 
 	b2FixtureDef fixture_world2;
 	fixture_world2.shape = &shape2;
 	pinball_world2->CreateFixture(&fixture_world2);
-	
+
+	//left flipper
+
+		int left_flipper_pixels[24] = {
+			76, 708,
+			72, 710,
+			72, 803,
+			83, 818,
+			119, 842,
+			180, 883,
+			188, 865,
+			128, 826,
+			99, 805,
+			83, 789,
+			79, 782,
+			79, 710
+		};
+
+		b2Vec2 p3[12];
+
+		for (uint i = 0; i < 12; i++)
+		{
+			p3[i].x = PIXEL_TO_METERS(left_flipper_pixels[2 * i]);
+			p3[i].y = PIXEL_TO_METERS(left_flipper_pixels[2 * i + 1]);
+		}
+
+
+		b2BodyDef body3;
+		body3.type = b2_staticBody;
+		body3.position.Set(0, 0);
+
+		b2Body* pinball_world3 = world->CreateBody(&body3);
+
+		b2ChainShape shape3;
+		shape3.CreateChain(p3, 12);
+
+
+
+		b2FixtureDef fixture_world3;
+		fixture_world3.shape = &shape3;
+		pinball_world3->CreateFixture(&fixture_world3);
+
+		//right flipper
+
+		int right_flipper_pixels[30] = {
+			470, 708,
+			473, 710,
+			472, 803,
+			462, 814,
+			444, 830,
+			431, 839,
+			402, 858,
+			365, 883,
+			354, 864,
+			392, 838,
+			416, 823,
+			444, 805,
+			461, 788,
+			465, 781,
+			465, 710
+		};
+
+		b2Vec2 p4[15];
+
+		for (uint i = 0; i < 15; i++)
+		{
+			p4[i].x = PIXEL_TO_METERS(right_flipper_pixels[2 * i]);
+			p4[i].y = PIXEL_TO_METERS(right_flipper_pixels[2 * i + 1]);
+		}
+
+
+		b2BodyDef body4;
+		body4.type = b2_staticBody;
+		body4.position.Set(0, 0);
+
+		b2Body* pinball_world4 = world->CreateBody(&body4);
+
+		b2ChainShape shape4;
+		shape4.CreateChain(p4, 15);
+
+
+
+		b2FixtureDef fixture_world4;
+		fixture_world4.shape = &shape4;
+		pinball_world4->CreateFixture(&fixture_world4);
+
+	//little left
+
+		int little_left[16] = {
+			225, 82,
+			221, 86,
+			221, 140,
+			226, 143,
+			238, 143,
+			242, 140,
+			242, 85,
+			238, 82
+		};
+
+		b2Vec2 p5[8];
+
+		for (uint i = 0; i < 8; i++)
+		{
+			p5[i].x = PIXEL_TO_METERS(little_left[2 * i]);
+			p5[i].y = PIXEL_TO_METERS(little_left[2 * i + 1]);
+		}
+
+
+		b2BodyDef body5;
+		body5.type = b2_staticBody;
+		body5.position.Set(0, 0);
+
+		b2Body* pinball_world5 = world->CreateBody(&body5);
+
+		b2ChainShape shape5;
+		shape5.CreateChain(p5, 8);
+
+
+
+		b2FixtureDef fixture_world5;
+		fixture_world5.shape = &shape5;
+		pinball_world5->CreateFixture(&fixture_world5);
+
+		//little right
+
+		int little_right[16] = {
+			306, 82,
+			303, 85,
+			303, 140,
+			306, 143,
+			320, 143,
+			323, 140,
+			323, 85,
+			320, 82
+		};
+
+		b2Vec2 p6[8];
+
+		for (uint i = 0; i < 8; i++)
+		{
+			p6[i].x = PIXEL_TO_METERS(little_right[2 * i]);
+			p6[i].y = PIXEL_TO_METERS(little_right[2 * i + 1]);
+		}
+
+
+		b2BodyDef body6;
+		body6.type = b2_staticBody;
+		body6.position.Set(0, 0);
+
+		b2Body* pinball_world6 = world->CreateBody(&body6);
+
+		b2ChainShape shape6;
+		shape6.CreateChain(p6, 8);
+
+
+
+		b2FixtureDef fixture_world6;
+		fixture_world6.shape = &shape6;
+		pinball_world6->CreateFixture(&fixture_world6);
+
+		//red point
+
+		int red_point[12] = {
+			265, 945,
+			266, 931,
+			269, 928,
+			277, 928,
+			280, 932,
+			280, 945
+		};
+
+		b2Vec2 p7[6];
+
+		for (uint i = 0; i < 6; i++)
+		{
+			p7[i].x = PIXEL_TO_METERS(red_point[2 * i]);
+			p7[i].y = PIXEL_TO_METERS(red_point[2 * i + 1]);
+		}
+
+
+		b2BodyDef body7;
+		body7.type = b2_staticBody;
+		body7.position.Set(0, 0);
+
+		b2Body* pinball_world7 = world->CreateBody(&body7);
+
+		b2ChainShape shape7;
+		shape7.CreateChain(p7, 6);
+
+
+
+		b2FixtureDef fixture_world7;
+		fixture_world7.shape = &shape7;
+		pinball_world7->CreateFixture(&fixture_world7);
 }
