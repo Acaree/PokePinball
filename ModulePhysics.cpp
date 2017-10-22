@@ -27,6 +27,9 @@ ModulePhysics::~ModulePhysics()
 
 bool ModulePhysics::Start()
 {
+
+	map = App->textures->Load("pinball/Map.png");
+
 	LOG("Creating Physics 2D environment");
 
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
@@ -35,6 +38,38 @@ bool ModulePhysics::Start()
 	// needed to create joints like mouse joint
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
+
+	
+	
+
+	//dook
+
+
+	dook.type = b2_dynamicBody;
+	dook.position.Set(PIXEL_TO_METERS(571), PIXEL_TO_METERS(854));
+
+	b2Body* d = world->CreateBody(&dook);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(45) * 0.5f, PIXEL_TO_METERS(6) * 0.5f);
+
+	b2FixtureDef dook1;
+	dook1.shape = &box;
+	dook1.density = 0.5f;
+
+	d->CreateFixture(&dook1);
+
+	b2PrismaticJointDef bouncy;
+	b2PrismaticJoint* bounzou;
+
+	bouncy.Initialize(ground, d, b2Vec2(PIXEL_TO_METERS(272), PIXEL_TO_METERS(20)), b2Vec2(0, 1));
+	bouncy.lowerTranslation = 0;
+	bouncy.upperTranslation = 1;
+	bouncy.enableLimit = true;
+	bouncy.maxMotorForce = 100;
+	bouncy.motorSpeed = 10.0f;
+	bouncy.enableMotor = true;	
+
+	bounzou = (b2PrismaticJoint*)world->CreateJoint(&bouncy);
 
 	int pinball_map[134] = {
 		0, 0,
@@ -103,74 +138,11 @@ bool ModulePhysics::Start()
 		470, 870,
 		354, 945,
 		653, 945,
-		653, 0 
+		653, 0
 	};
-	
-	b2Vec2 p[67];
 
-	for (uint i = 0; i < 67; i++)
-	{
-		p[i].x = PIXEL_TO_METERS(pinball_map[2 * i]);
-		p[i].y = PIXEL_TO_METERS(pinball_map[2 * i + 1]);
-	}
-
-
-	b2BodyDef body;
-	body.type = b2_staticBody;
-	body.position.Set(0,0);
-
-	b2Body* pinball_world = world->CreateBody(&body);
-	
-	b2ChainShape shape;
-	shape.CreateChain(p,67);
-	
-	
-
-	b2FixtureDef fixture_world;
-	fixture_world.shape = &shape;
-	pinball_world->CreateFixture(&fixture_world);
-	
-
-	
-	map = App->textures->Load("pinball/Map.png");
-
-	//dook
-
-
-	dook.type = b2_dynamicBody;
-	dook.position.Set(PIXEL_TO_METERS(571), PIXEL_TO_METERS(854));
-
-	b2Body* d = world->CreateBody(&dook);
-	b2PolygonShape box;
-	box.SetAsBox(PIXEL_TO_METERS(45) * 0.5f, PIXEL_TO_METERS(6) * 0.5f);
-
-	b2FixtureDef dook1;
-	dook1.shape = &box;
-	dook1.density = 0.5f;
-
-	d->CreateFixture(&dook1);
-
-	b2PrismaticJointDef bouncy;
-	b2PrismaticJoint* bounzou;
-	/*bouncy.bodyA = d;
-	bouncy.bodyB = ground;
-	bouncy.collideConnected = false;
-	bouncy.localAxisA.Set(0, 1);
-	bouncy.localAnchorA.Set(PIXEL_TO_METERS(22) * 0.5f,PIXEL_TO_METERS(1));
-	bouncy.localAnchorB.Set(PIXEL_TO_METERS(270), PIXEL_TO_METERS(450));*/
-
-	bouncy.Initialize(ground, d, b2Vec2(PIXEL_TO_METERS(272), PIXEL_TO_METERS(20)), b2Vec2(0, 1));
-	bouncy.lowerTranslation = 0;
-	bouncy.upperTranslation = 1;
-	bouncy.enableLimit = true;
-	bouncy.maxMotorForce = 100;
-	bouncy.motorSpeed = 10.0f;
-	bouncy.enableMotor = true;	
-
-	bounzou = (b2PrismaticJoint*)world->CreateJoint(&bouncy);
-
-
-	CreateMapObstacles();
+	PhysBody* body_map = App->physics->CreateChain(0, 0, pinball_map, 134, b2_staticBody);
+	App->physics->CreateMapObstacles();
 	
 	return true;
 }
@@ -204,10 +176,10 @@ update_status ModulePhysics::Update() {
  	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = type;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -228,10 +200,10 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = type;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -280,10 +252,10 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2BodyType type)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = type;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -541,29 +513,7 @@ void ModulePhysics::CreateMapObstacles() {
 		161, 111
 	};
 
-	b2Vec2 p[33];
-
-	for (uint i = 0; i < 33; i++)
-	{
-		p[i].x = PIXEL_TO_METERS(slowbro_pixels[2 * i]);
-		p[i].y = PIXEL_TO_METERS(slowbro_pixels[2 * i + 1]);
-	}
-
-
-	b2BodyDef body;
-	body.type = b2_staticBody;
-	body.position.Set(0, 0);
-
-	b2Body* pinball_world = world->CreateBody(&body);
-
-	b2ChainShape shape;
-	shape.CreateChain(p, 33);
-
-
-
-	b2FixtureDef fixture_world;
-	fixture_world.shape = &shape;
-	pinball_world->CreateFixture(&fixture_world);
+	PhysBody* slowbro_wall = CreateChain(0, 0, slowbro_pixels, 66, b2_staticBody);
 	
 		
 	// wall cloyster
@@ -608,33 +558,11 @@ void ModulePhysics::CreateMapObstacles() {
 			389, 112
 	};
 
-	b2Vec2 p2[37];
+		PhysBody* cloyster_wall = CreateChain(0, 0, cloyster_pixels, 74, b2_staticBody);
 
-	for (uint i = 0; i < 37; i++)
-	{
-		p2[i].x = PIXEL_TO_METERS(cloyster_pixels[2 * i]);
-		p2[i].y = PIXEL_TO_METERS(cloyster_pixels[2 * i + 1]);
-	}
+	//left flipper wall
 
-
-	b2BodyDef body2;
-	body2.type = b2_staticBody;
-	body2.position.Set(0, 0);
-
-	b2Body* pinball_world2 = world->CreateBody(&body2);
-
-	b2ChainShape shape2;
-	shape2.CreateChain(p2, 37);
-
-
-
-	b2FixtureDef fixture_world2;
-	fixture_world2.shape = &shape2;
-	pinball_world2->CreateFixture(&fixture_world2);
-
-	//left flipper
-
-		int left_flipper_pixels[24] = {
+		int left_flipper_wall_pixels[24] = {
 			76, 708,
 			72, 710,
 			72, 803,
@@ -649,33 +577,11 @@ void ModulePhysics::CreateMapObstacles() {
 			79, 710
 		};
 
-		b2Vec2 p3[12];
+		PhysBody* left_flipper_wall = CreateChain(0, 0, left_flipper_wall_pixels, 24, b2_staticBody);
 
-		for (uint i = 0; i < 12; i++)
-		{
-			p3[i].x = PIXEL_TO_METERS(left_flipper_pixels[2 * i]);
-			p3[i].y = PIXEL_TO_METERS(left_flipper_pixels[2 * i + 1]);
-		}
+		//right flipper wall
 
-
-		b2BodyDef body3;
-		body3.type = b2_staticBody;
-		body3.position.Set(0, 0);
-
-		b2Body* pinball_world3 = world->CreateBody(&body3);
-
-		b2ChainShape shape3;
-		shape3.CreateChain(p3, 12);
-
-
-
-		b2FixtureDef fixture_world3;
-		fixture_world3.shape = &shape3;
-		pinball_world3->CreateFixture(&fixture_world3);
-
-		//right flipper
-
-		int right_flipper_pixels[30] = {
+		int right_flipper_wall_pixels[30] = {
 			470, 708,
 			473, 710,
 			472, 803,
@@ -693,33 +599,11 @@ void ModulePhysics::CreateMapObstacles() {
 			465, 710
 		};
 
-		b2Vec2 p4[15];
+		PhysBody* right_flipper_wall = CreateChain(0, 0, right_flipper_wall_pixels, 30, b2_staticBody);
 
-		for (uint i = 0; i < 15; i++)
-		{
-			p4[i].x = PIXEL_TO_METERS(right_flipper_pixels[2 * i]);
-			p4[i].y = PIXEL_TO_METERS(right_flipper_pixels[2 * i + 1]);
-		}
+	//little left wall
 
-
-		b2BodyDef body4;
-		body4.type = b2_staticBody;
-		body4.position.Set(0, 0);
-
-		b2Body* pinball_world4 = world->CreateBody(&body4);
-
-		b2ChainShape shape4;
-		shape4.CreateChain(p4, 15);
-
-
-
-		b2FixtureDef fixture_world4;
-		fixture_world4.shape = &shape4;
-		pinball_world4->CreateFixture(&fixture_world4);
-
-	//little left
-
-		int little_left[16] = {
+		int little_upleft_pixels[16] = {
 			225, 82,
 			221, 86,
 			221, 140,
@@ -730,33 +614,11 @@ void ModulePhysics::CreateMapObstacles() {
 			238, 82
 		};
 
-		b2Vec2 p5[8];
-
-		for (uint i = 0; i < 8; i++)
-		{
-			p5[i].x = PIXEL_TO_METERS(little_left[2 * i]);
-			p5[i].y = PIXEL_TO_METERS(little_left[2 * i + 1]);
-		}
-
-
-		b2BodyDef body5;
-		body5.type = b2_staticBody;
-		body5.position.Set(0, 0);
-
-		b2Body* pinball_world5 = world->CreateBody(&body5);
-
-		b2ChainShape shape5;
-		shape5.CreateChain(p5, 8);
-
-
-
-		b2FixtureDef fixture_world5;
-		fixture_world5.shape = &shape5;
-		pinball_world5->CreateFixture(&fixture_world5);
+		PhysBody* little_upleft_wall = CreateChain(0, 0, little_upleft_pixels, 16, b2_staticBody);
 
 		//little right
 
-		int little_right[16] = {
+		int little_upright_pixels[16] = {
 			306, 82,
 			303, 85,
 			303, 140,
@@ -767,33 +629,11 @@ void ModulePhysics::CreateMapObstacles() {
 			320, 82
 		};
 
-		b2Vec2 p6[8];
-
-		for (uint i = 0; i < 8; i++)
-		{
-			p6[i].x = PIXEL_TO_METERS(little_right[2 * i]);
-			p6[i].y = PIXEL_TO_METERS(little_right[2 * i + 1]);
-		}
-
-
-		b2BodyDef body6;
-		body6.type = b2_staticBody;
-		body6.position.Set(0, 0);
-
-		b2Body* pinball_world6 = world->CreateBody(&body6);
-
-		b2ChainShape shape6;
-		shape6.CreateChain(p6, 8);
-
-
-
-		b2FixtureDef fixture_world6;
-		fixture_world6.shape = &shape6;
-		pinball_world6->CreateFixture(&fixture_world6);
+		PhysBody* little_upright_wall = CreateChain(0, 0, little_upright_pixels, 16, b2_staticBody);
 
 		//red point
 
-		int red_point[12] = {
+		int red_point_pixels[12] = {
 			265, 945,
 			266, 931,
 			269, 928,
@@ -802,31 +642,5 @@ void ModulePhysics::CreateMapObstacles() {
 			280, 945
 		};
 
-		b2Vec2 p7[6];
-
-		for (uint i = 0; i < 6; i++)
-		{
-			p7[i].x = PIXEL_TO_METERS(red_point[2 * i]);
-			p7[i].y = PIXEL_TO_METERS(red_point[2 * i + 1]);
-		}
-
-
-		b2BodyDef body7;
-		body7.type = b2_staticBody;
-		body7.position.Set(0, 0);
-
-		b2Body* pinball_world7 = world->CreateBody(&body7);
-
-		b2ChainShape shape7;
-		shape7.CreateChain(p7, 6);
-
-
-
-		b2FixtureDef fixture_world7;
-		fixture_world7.shape = &shape7;
-		pinball_world7->CreateFixture(&fixture_world7);
-
-
-
-
+		PhysBody* red_point_wall = CreateChain(0, 0, red_point_pixels, 12, b2_staticBody);
 }
