@@ -29,6 +29,8 @@ bool ModulePhysics::Start()
 {
 
 	map = App->textures->Load("pinball/Map.png");
+	left_flipper_png = App->textures->Load("pinball/left_flipper.png");
+	right_flipper_png = App->textures->Load("pinball/right_flipper.png");
 
 	LOG("Creating Physics 2D environment");
 
@@ -42,54 +44,59 @@ bool ModulePhysics::Start()
 	
 	
 
-	//dook (el aplication init coge la variable dook vet a saber porque)
+	//bouncy
 
+	bouncy = CreateRectangle(572, 921, 45, 6, b2_dynamicBody);
+	pivotBouncy = CreateRectangle(572, 944, 45, 6, b2_staticBody);
 
-	dook.type = b2_dynamicBody;
-	dook.position.Set(PIXEL_TO_METERS(571), PIXEL_TO_METERS(854));
+	b2PrismaticJointDef dook;
+	dook.collideConnected = true;
+	dook.bodyA = bouncy->body;
+	dook.bodyB = pivotBouncy->body;
 
-	b2Body* d = world->CreateBody(&dook);
-	b2PolygonShape box;
-	box.SetAsBox(PIXEL_TO_METERS(45) * 0.5f, PIXEL_TO_METERS(6) * 0.5f);
+	dook.localAnchorA.Set(0, 0);
+	dook.localAnchorB.Set(0, -1);
+	dook.localAxisA.Set(0, -1);
+	dook.enableLimit = true;
+	dook.lowerTranslation = -0.02;
+	dook.upperTranslation = 1;
+	(b2PrismaticJoint*)world->CreateJoint(&dook);
 
-	b2FixtureDef dook1;
-	dook1.shape = &box;
-	dook1.density = 0.5f;
+	//left flipper
 
-	d->CreateFixture(&dook1);
-
-	b2PrismaticJointDef bouncy;
-	b2PrismaticJoint* bounzou;
-
-	bouncy.Initialize(ground, d, b2Vec2(PIXEL_TO_METERS(272), PIXEL_TO_METERS(20)), b2Vec2(0, 1));
-	bouncy.lowerTranslation = 0;
-	bouncy.upperTranslation = 1;
-	bouncy.enableLimit = true;
-	bouncy.maxMotorForce = 100;
-	bouncy.motorSpeed = 10.0f;
-	bouncy.enableMotor = true;	
-
-	bounzou = (b2PrismaticJoint*)world->CreateJoint(&bouncy);
-
-	PhysBody* left_flipper_anchor = CreateCircle(220,880,8,b2_staticBody);
-	PhysBody* left_flipper = CreateRectangle(237, 880, 50, 16, b2_dynamicBody);
+	left_flipper_anchor = CreateCircle(201,880,8,b2_staticBody);
+	left_flipper = CreateRectangle(350, 880, 63, 16, b2_dynamicBody);
 
 	b2RevoluteJointDef left_joint_def;
 	left_joint_def.bodyA = left_flipper->body;
 	left_joint_def.bodyB = left_flipper_anchor->body;
 
-	b2Vec2 LsetA = { -0.05f,-0.05f };
-	b2Vec2 LsetB = left_flipper_anchor->body->GetLocalCenter();
+	b2Vec2 LsetA = { -0.4f,0 };
 
 	left_joint_def.localAnchorA.Set(LsetA.x, LsetA.y);
-	left_joint_def.localAnchorB.Set(LsetB.x, LsetB.y);
-
 	left_joint_def.enableLimit = true;
-	left_joint_def.lowerAngle = -45 * DEGTORAD;
-	left_joint_def.upperAngle = 45 * DEGTORAD;
+	left_joint_def.lowerAngle = -30 * DEGTORAD;
+	left_joint_def.upperAngle = 30 * DEGTORAD;
 
 	joint_left_flipper = (b2RevoluteJoint*)world->CreateJoint(&left_joint_def);
 
+	//right flipper
+
+	right_flipper_anchor = CreateCircle(341, 880, 8, b2_staticBody);
+	right_flipper = CreateRectangle(250, 880, 63, 16, b2_dynamicBody);
+
+	b2RevoluteJointDef right_joint_def;
+	right_joint_def.bodyA = right_flipper->body;
+	right_joint_def.bodyB = right_flipper_anchor->body;
+
+	b2Vec2 RsetA = { 0.4f,0 };
+
+	right_joint_def.localAnchorA.Set(RsetA.x, RsetA.y);
+	right_joint_def.enableLimit = true;
+	right_joint_def.lowerAngle = -30 * DEGTORAD;
+	right_joint_def.upperAngle = 30 * DEGTORAD;
+
+	joint_right_flipper = (b2RevoluteJoint*)world->CreateJoint(&right_joint_def);
 
 	int pinball_map[134] = {
 		0, 0,
@@ -188,12 +195,33 @@ update_status ModulePhysics::PreUpdate()
 
 update_status ModulePhysics::Update() {
 
-	App->renderer->Blit(map, 0, 0, NULL, 0, 0);
 
-	//if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+
+	App->renderer->Blit(map, 0, 0, NULL, 0, 0);
+	App->renderer->Blit(left_flipper_png, 175, 865, NULL, 1.0f, left_flipper->GetRotation(),17,15);
+	App->renderer->Blit(right_flipper_png, 288, 865, NULL, 1.0f, right_flipper->GetRotation(), 64, 15);
+
+	App->physics->bouncy->body->ApplyForce(b2Vec2(0, -5), b2Vec2(0, 0), true);
+
+	App->physics->left_flipper->body->ApplyForce(b2Vec2(0, -2), b2Vec2(0, 0), true);
+	App->physics->right_flipper->body->ApplyForce(b2Vec2(0, 2), b2Vec2(0, 0), true);
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	{
+		App->physics->bouncy->body->ApplyForce(b2Vec2(0, 10), b2Vec2(0, 0), true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
+	{
+		App->physics->bouncy->body->ApplyForce(b2Vec2(0, -1250), b2Vec2(0, 0), true);
+	}
 		
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) {
-		joint_left_flipper->GetBodyA()->ApplyAngularImpulse(-0.75f, true);
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		joint_left_flipper->GetBodyA()->ApplyAngularImpulse(-7, true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		joint_right_flipper->GetBodyA()->ApplyAngularImpulse(7, true);
 	}
 
  	return UPDATE_CONTINUE;
@@ -656,14 +684,13 @@ void ModulePhysics::CreateMapObstacles() {
 
 		//red point
 
-		int red_point_pixels[12] = {
-			265, 945,
-			266, 931,
-			269, 928,
-			277, 928,
-			280, 932,
-			280, 945
+		int red_point_pixels[10] = {
+			273, 929,
+			267, 933,
+			267, 945,
+			278, 945,
+			278, 933
 		};
 
-		PhysBody* red_point_wall = CreateChain(0, 0, red_point_pixels, 12, b2_staticBody);
+		PhysBody* red_point_wall = CreateChain(0, 0, red_point_pixels, 10, b2_staticBody);
 }

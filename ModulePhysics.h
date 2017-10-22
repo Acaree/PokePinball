@@ -54,10 +54,17 @@ public:
 
 private:
 
-	
+	PhysBody *bouncy, *pivotBouncy;
 	b2RevoluteJoint* joint_left_flipper;
+	b2RevoluteJoint* joint_right_flipper;
+	PhysBody* left_flipper_anchor;
+	PhysBody* left_flipper;
+	PhysBody* right_flipper_anchor;
+	PhysBody* right_flipper;
 	b2BodyDef dook;
 	SDL_Texture* map;
+	SDL_Texture* left_flipper_png;
+	SDL_Texture* right_flipper_png;
 	b2Body* body_clicked = nullptr;
 	bool debug;
 	b2World* world;
