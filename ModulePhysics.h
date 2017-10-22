@@ -54,6 +54,8 @@ public:
 
 private:
 
+	
+	b2RevoluteJoint* joint_left_flipper;
 	b2BodyDef dook;
 	SDL_Texture* map;
 	b2Body* body_clicked = nullptr;

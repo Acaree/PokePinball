@@ -42,7 +42,7 @@ bool ModulePhysics::Start()
 	
 	
 
-	//dook
+	//dook (el aplication init coge la variable dook vet a saber porque)
 
 
 	dook.type = b2_dynamicBody;
@@ -70,6 +70,26 @@ bool ModulePhysics::Start()
 	bouncy.enableMotor = true;	
 
 	bounzou = (b2PrismaticJoint*)world->CreateJoint(&bouncy);
+
+	PhysBody* left_flipper_anchor = CreateCircle(220,880,8,b2_staticBody);
+	PhysBody* left_flipper = CreateRectangle(237, 880, 50, 16, b2_dynamicBody);
+
+	b2RevoluteJointDef left_joint_def;
+	left_joint_def.bodyA = left_flipper->body;
+	left_joint_def.bodyB = left_flipper_anchor->body;
+
+	b2Vec2 LsetA = { -0.05f,-0.05f };
+	b2Vec2 LsetB = left_flipper_anchor->body->GetLocalCenter();
+
+	left_joint_def.localAnchorA.Set(LsetA.x, LsetA.y);
+	left_joint_def.localAnchorB.Set(LsetB.x, LsetB.y);
+
+	left_joint_def.enableLimit = true;
+	left_joint_def.lowerAngle = -45 * DEGTORAD;
+	left_joint_def.upperAngle = 45 * DEGTORAD;
+
+	joint_left_flipper = (b2RevoluteJoint*)world->CreateJoint(&left_joint_def);
+
 
 	int pinball_map[134] = {
 		0, 0,
@@ -170,8 +190,11 @@ update_status ModulePhysics::Update() {
 
 	App->renderer->Blit(map, 0, 0, NULL, 0, 0);
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		dook.position.Set(PIXEL_TO_METERS(571), PIXEL_TO_METERS(1000));
+	//if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) {
+		joint_left_flipper->GetBodyA()->ApplyAngularImpulse(-0.75f, true);
+	}
 
  	return UPDATE_CONTINUE;
 }
