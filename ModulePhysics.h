@@ -49,6 +49,11 @@ public:
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType type);
 
+	PhysBody* left_flipper_anchor;
+	PhysBody* left_flipper;
+	PhysBody* right_flipper_anchor;
+	PhysBody* right_flipper;
+	PhysBody* right_bounce;
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 
@@ -57,10 +62,7 @@ private:
 	PhysBody *bouncy, *pivotBouncy;
 	b2RevoluteJoint* joint_left_flipper;
 	b2RevoluteJoint* joint_right_flipper;
-	PhysBody* left_flipper_anchor;
-	PhysBody* left_flipper;
-	PhysBody* right_flipper_anchor;
-	PhysBody* right_flipper;
+
 	b2BodyDef dook;
 	SDL_Texture* map;
 	SDL_Texture* left_flipper_png;

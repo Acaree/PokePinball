@@ -65,7 +65,7 @@ bool ModulePhysics::Start()
 	//left flipper
 
 	left_flipper_anchor = CreateCircle(201,880,8,b2_staticBody);
-	left_flipper = CreateRectangle(350, 880, 63, 16, b2_dynamicBody);
+	left_flipper = CreateRectangle(350, 880, 64, 16, b2_dynamicBody);
 
 	b2RevoluteJointDef left_joint_def;
 	left_joint_def.bodyA = left_flipper->body;
@@ -83,7 +83,7 @@ bool ModulePhysics::Start()
 	//right flipper
 
 	right_flipper_anchor = CreateCircle(341, 880, 8, b2_staticBody);
-	right_flipper = CreateRectangle(250, 880, 63, 16, b2_dynamicBody);
+	right_flipper = CreateRectangle(250, 880, 64, 16, b2_dynamicBody);
 
 	b2RevoluteJointDef right_joint_def;
 	right_joint_def.bodyA = right_flipper->body;
@@ -223,6 +223,8 @@ update_status ModulePhysics::Update() {
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		joint_right_flipper->GetBodyA()->ApplyAngularImpulse(7, true);
 	}
+
+	
 
  	return UPDATE_CONTINUE;
 }
@@ -693,4 +695,26 @@ void ModulePhysics::CreateMapObstacles() {
 		};
 
 		PhysBody* red_point_wall = CreateChain(0, 0, red_point_pixels, 10, b2_staticBody);
+
+		//left_bounce
+
+		int left_bounce_pixels[8] = {
+			125, 713,
+			125, 764,
+			167, 793,
+			129, 713
+		};
+
+		PhysBody* left_bounce = CreateChain(0, 0, left_bounce_pixels, 8, b2_staticBody);
+
+		//right_bounce
+
+		int right_bounce_pixels[8] = {
+			420, 713,
+			420, 764,
+			377, 793,
+			419, 713
+		};
+
+		right_bounce = CreateChain(0, 0, right_bounce_pixels, 8, b2_staticBody);
 }
