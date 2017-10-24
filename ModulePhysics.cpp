@@ -31,6 +31,7 @@ bool ModulePhysics::Start()
 	map = App->textures->Load("pinball/Map.png");
 	left_flipper_png = App->textures->Load("pinball/left_flipper.png");
 	right_flipper_png = App->textures->Load("pinball/right_flipper.png");
+	shelder_png = App->textures->Load("pinball/shelder.png");
 
 	LOG("Creating Physics 2D environment");
 
@@ -65,7 +66,7 @@ bool ModulePhysics::Start()
 	//left flipper
 
 	left_flipper_anchor = CreateCircle(201,880,8,b2_staticBody);
-	left_flipper = CreateRectangle(350, 880, 64, 16, b2_dynamicBody);
+	left_flipper = CreateRectangle(350, 880, 63, 16, b2_dynamicBody);
 
 	b2RevoluteJointDef left_joint_def;
 	left_joint_def.bodyA = left_flipper->body;
@@ -83,7 +84,7 @@ bool ModulePhysics::Start()
 	//right flipper
 
 	right_flipper_anchor = CreateCircle(341, 880, 8, b2_staticBody);
-	right_flipper = CreateRectangle(250, 880, 64, 16, b2_dynamicBody);
+	right_flipper = CreateRectangle(250, 880, 63, 16, b2_dynamicBody);
 
 	b2RevoluteJointDef right_joint_def;
 	right_joint_def.bodyA = right_flipper->body;
@@ -198,6 +199,9 @@ update_status ModulePhysics::Update() {
 
 
 	App->renderer->Blit(map, 0, 0, NULL, 0, 0);
+	App->renderer->Blit(shelder_png, 176, 211, NULL, 1.0f);
+	App->renderer->Blit(shelder_png, 241, 161, NULL, 1.0f);
+	App->renderer->Blit(shelder_png, 306, 211, NULL, 1.0f);
 	App->renderer->Blit(left_flipper_png, 175, 865, NULL, 1.0f, left_flipper->GetRotation(),17,15);
 	App->renderer->Blit(right_flipper_png, 288, 865, NULL, 1.0f, right_flipper->GetRotation(), 64, 15);
 
@@ -744,4 +748,13 @@ void ModulePhysics::CreateMapObstacles() {
 		right_bounce = CreateChain(0, 0, right_bounce_pixels, 6, b2_staticBody);
 
 		right_bounce->body->GetFixtureList()->SetRestitution(1.5f);
+
+		//shelder
+
+		shelder1 = CreateCircle(204, 238, 10.0f, b2_staticBody);
+		shelder2 = CreateCircle(269, 188, 10.0f, b2_staticBody);
+		shelder3 = CreateCircle(334, 238, 10.0f, b2_staticBody);
+		shelder1->body->GetFixtureList()->SetRestitution(2.5f);
+		shelder2->body->GetFixtureList()->SetRestitution(2.5f);
+		shelder3->body->GetFixtureList()->SetRestitution(2.5f);
 }

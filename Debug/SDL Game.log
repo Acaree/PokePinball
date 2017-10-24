@@ -1,14 +1,37 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(373,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  Application.cpp
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\limits(211): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  Generating Code...
+  Compiling...
+  log.cpp
+  ModuleWindow.cpp
+  ModuleTextures.cpp
+  ModuleSceneIntro.cpp
+c:\users\sergiogr5\documents\github\pokepinball\modulesceneintro.cpp(91): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulesceneintro.cpp(93): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulesceneintro.cpp(95): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulesceneintro.cpp(98): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulesceneintro.cpp(106): warning C4101: 'y': unreferenced local variable
+c:\users\sergiogr5\documents\github\pokepinball\modulesceneintro.cpp(106): warning C4101: 'x': unreferenced local variable
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\limits(211): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  ModuleRender.cpp
+  ModulePlayer.cpp
   ModulePhysics.cpp
-c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(61): warning C4305: '=': truncation from 'double' to 'float32'
-c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(216): warning C4305: 'argument': truncation from '__int64' to 'float32'
-c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(276): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(277): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(320): warning C4018: '<': signed/unsigned mismatch
-c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(356): warning C4244: 'argument': conversion from 'int' to 'float32', possible loss of data
-c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(503): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(504): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(510): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(62): warning C4305: '=': truncation from 'double' to 'float32'
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(280): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(281): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(324): warning C4018: '<': signed/unsigned mismatch
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(360): warning C4244: 'argument': conversion from 'int' to 'float32', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(507): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(508): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(514): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(754): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(755): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\sergiogr5\documents\github\pokepinball\modulephysics.cpp(756): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\cmath(113): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
-  SDL Game.vcxproj -> C:\Users\sergiogr5\Desktop\PokePinball\.\Game\2D Physics - class 4.exe
+  ModuleInput.cpp
+  ModuleAudio.cpp
+  Main.cpp
+  Generating Code...
+  SDL Game.vcxproj -> C:\Users\sergiogr5\Documents\GitHub\PokePinball\.\Game\2D Physics - class 4.exe
   SDL Game.vcxproj -> .\Game\2D Physics - class 4.pdb (Partial PDB)

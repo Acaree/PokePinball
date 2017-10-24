@@ -57,6 +57,9 @@ public:
 	PhysBody* right_triangle;
 	PhysBody* left_bounce;
 	PhysBody* right_bounce;
+	PhysBody* shelder1;
+	PhysBody* shelder2;
+	PhysBody* shelder3;
 	// b2ContactListener ---;
 	void BeginContact(b2Contact* contact);
 
@@ -70,6 +73,7 @@ private:
 	SDL_Texture* map;
 	SDL_Texture* left_flipper_png;
 	SDL_Texture* right_flipper_png;
+	SDL_Texture* shelder_png;
 	b2Body* body_clicked = nullptr;
 	bool debug;
 	b2World* world;
