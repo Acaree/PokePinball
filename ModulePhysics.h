@@ -53,8 +53,11 @@ public:
 	PhysBody* left_flipper;
 	PhysBody* right_flipper_anchor;
 	PhysBody* right_flipper;
+	PhysBody* left_triangle;
+	PhysBody* right_triangle;
+	PhysBody* left_bounce;
 	PhysBody* right_bounce;
-	// b2ContactListener ---
+	// b2ContactListener ---;
 	void BeginContact(b2Contact* contact);
 
 private:

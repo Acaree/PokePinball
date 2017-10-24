@@ -234,6 +234,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type)
 	b2BodyDef body;
 	body.type = type;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	body.bullet = true;
 
 	b2Body* b = world->CreateBody(&body);
 
@@ -696,25 +697,51 @@ void ModulePhysics::CreateMapObstacles() {
 
 		PhysBody* red_point_wall = CreateChain(0, 0, red_point_pixels, 10, b2_staticBody);
 
-		//left_bounce
+		//left_triangle
 
-		int left_bounce_pixels[8] = {
+		int left_triangle_pixels[8] = {
 			125, 713,
 			125, 764,
 			167, 793,
-			129, 713
+			126, 713
 		};
 
-		PhysBody* left_bounce = CreateChain(0, 0, left_bounce_pixels, 8, b2_staticBody);
+		left_triangle = CreateChain(0, 0, left_triangle_pixels, 8, b2_staticBody);
 
-		//right_bounce
+		//right_triangle
 
-		int right_bounce_pixels[8] = {
+		int right_triangle_pixels[8] = {
 			420, 713,
 			420, 764,
 			377, 793,
 			419, 713
 		};
 
-		right_bounce = CreateChain(0, 0, right_bounce_pixels, 8, b2_staticBody);
+		right_triangle = CreateChain(0, 0, right_triangle_pixels, 8, b2_staticBody);
+
+		//left_bounce
+
+		int left_bounce_pixels[6] = {
+			130, 718,
+			130, 719,
+			160, 780,
+
+		};
+
+		left_bounce = CreateChain(0, 0, left_bounce_pixels, 6, b2_staticBody);
+
+		left_bounce->body->GetFixtureList()->SetRestitution(1.5f);
+
+		//right_bounce
+
+		int right_bounce_pixels[6] = {
+			415, 718,
+			415, 719,
+			384, 780,
+
+		};
+
+		right_bounce = CreateChain(0, 0, right_bounce_pixels, 6, b2_staticBody);
+
+		right_bounce->body->GetFixtureList()->SetRestitution(1.5f);
 }

@@ -1,34 +1,14 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(373,5): warning MSB8004: El directorio Output no termina con una barra diagonal final. Esta instancia de compilación agregará la barra diagonal porque es necesaria para que se pueda evaluar correctamente el directorio Output.
-  Application.cpp
-c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\limits(211): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  Generando código...
-  Compilando...
-  log.cpp
-  ModuleWindow.cpp
-  ModuleTextures.cpp
-  ModuleSceneIntro.cpp
-c:\users\sergio\documents\github\pokepinball\modulesceneintro.cpp(91): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\sergio\documents\github\pokepinball\modulesceneintro.cpp(93): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\sergio\documents\github\pokepinball\modulesceneintro.cpp(95): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\sergio\documents\github\pokepinball\modulesceneintro.cpp(98): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\sergio\documents\github\pokepinball\modulesceneintro.cpp(106): warning C4101: 'y': variable local sin referencia
-c:\users\sergio\documents\github\pokepinball\modulesceneintro.cpp(106): warning C4101: 'x': variable local sin referencia
-c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\limits(211): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  ModuleRender.cpp
-  ModulePlayer.cpp
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(373,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
   ModulePhysics.cpp
-c:\users\sergio\documents\github\pokepinball\modulephysics.cpp(61): warning C4305: '=': truncamiento de 'double' a 'float32'
-c:\users\sergio\documents\github\pokepinball\modulephysics.cpp(275): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\sergio\documents\github\pokepinball\modulephysics.cpp(276): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\sergio\documents\github\pokepinball\modulephysics.cpp(319): warning C4018: '<': no coinciden signed/unsigned
-c:\users\sergio\documents\github\pokepinball\modulephysics.cpp(355): warning C4244: 'argumento': conversión de 'int' a 'float32'; posible pérdida de datos
-c:\users\sergio\documents\github\pokepinball\modulephysics.cpp(502): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\sergio\documents\github\pokepinball\modulephysics.cpp(503): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\sergio\documents\github\pokepinball\modulephysics.cpp(509): warning C4244: 'return': conversión de 'float32' a 'int'; posible pérdida de datos
-c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\cmath(113): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  ModuleInput.cpp
-  ModuleAudio.cpp
-  Main.cpp
-  Generando código...
-  SDL Game.vcxproj -> C:\Users\Sergio\Documents\GitHub\PokePinball\.\Game\2D Physics - class 4.exe
+c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(61): warning C4305: '=': truncation from 'double' to 'float32'
+c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(216): warning C4305: 'argument': truncation from '__int64' to 'float32'
+c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(276): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(277): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(320): warning C4018: '<': signed/unsigned mismatch
+c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(356): warning C4244: 'argument': conversion from 'int' to 'float32', possible loss of data
+c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(503): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(504): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\sergiogr5\desktop\pokepinball\modulephysics.cpp(510): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\cmath(113): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  SDL Game.vcxproj -> C:\Users\sergiogr5\Desktop\PokePinball\.\Game\2D Physics - class 4.exe
   SDL Game.vcxproj -> .\Game\2D Physics - class 4.pdb (Partial PDB)
