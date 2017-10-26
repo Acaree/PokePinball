@@ -9,7 +9,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	circle = box = rick = NULL;
+
 	ray_on = false;
 	sensed = false;
 
@@ -30,7 +30,7 @@ bool ModuleSceneIntro::Start()
 
 	circle = App->textures->Load("pinball/Pokeball.png"); 
 	bonus_fx = App->audio->LoadFx("changed because sound is anoying");
-
+	right_light = App->textures->Load("pinball/right_light.png");
 	//sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 
 	return ret;
@@ -47,19 +47,21 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	//if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	//{
-	//	ray_on = !ray_on;
-	//	ray.x = App->input->GetMouseX();
-	//	ray.y = App->input->GetMouseY();
-	//}
 
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (pokeball == true) {
+		circles = App->physics->CreateCircle(570, 870, 22, b2_dynamicBody);
+		pokeball = false;
+	}
+		int ballx, bally;
+		circles->GetPosition(ballx, bally);
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || circles->body->GetPosition().y >= 0.02*1025)
 	{
-		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 22, b2_dynamicBody));
-		circles.getLast()->data->listener = this;
+		App->renderer->Blit(right_light, 415, 718, NULL, 0.1f, App->physics->right_bounce->GetRotation());
+		circles->body->DestroyFixture(circles->body->GetFixtureList());
+		pokeball = true;
 	}
 
+		App->renderer->Blit(circle, ballx - 6, bally - 7, NULL, 1.0f, circles->GetRotation());
 
 	// Prepare for raycast ------------------------------------------------------
 	
@@ -69,21 +71,6 @@ update_status ModuleSceneIntro::Update()
 	int ray_hit = ray.DistanceTo(mouse);
 
 	fVector normal(0.0f, 0.0f);
-
-	// All draw functions ------------------------------------------------------
-	p2List_item<PhysBody*>* c = circles.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		//if(c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-			App->renderer->Blit(circle, x-6, y-7, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
-
-	c = boxes.getFirst();
-
 
 	// ray -----------------
 	if(ray_on == true)
@@ -106,5 +93,10 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	int x, y;
 
 	App->audio->PlayFx(bonus_fx);
+
+	if (bodyA->body == App->physics->right_bounce->body && bodyB->body == circles->body)
+	{
+		App->renderer->Blit(right_light, 415, 718, NULL, 0.1f, App->physics->right_bounce->GetRotation());
+	}
 
 }

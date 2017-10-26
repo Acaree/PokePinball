@@ -754,7 +754,7 @@ void ModulePhysics::CreateMapObstacles() {
 		shelder1 = CreateCircle(204, 238, 10.0f, b2_staticBody);
 		shelder2 = CreateCircle(269, 188, 10.0f, b2_staticBody);
 		shelder3 = CreateCircle(334, 238, 10.0f, b2_staticBody);
-		shelder1->body->GetFixtureList()->SetRestitution(2.5f);
-		shelder2->body->GetFixtureList()->SetRestitution(2.5f);
-		shelder3->body->GetFixtureList()->SetRestitution(2.5f);
+		shelder1->body->GetFixtureList()->SetRestitution(1.5f);
+		shelder2->body->GetFixtureList()->SetRestitution(1.5f);
+		shelder3->body->GetFixtureList()->SetRestitution(1.5f);
 }

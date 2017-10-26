@@ -18,15 +18,16 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 public:
-	p2List<PhysBody*> circles;
+	PhysBody* circles;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
 
 	PhysBody* sensor;
 	bool sensed;
+	bool pokeball = true;;
 
 	SDL_Texture* circle;
-	SDL_Texture* box;
+	SDL_Texture* right_light;
 	SDL_Texture* rick;
 	uint bonus_fx;
 	p2Point<int> ray;
