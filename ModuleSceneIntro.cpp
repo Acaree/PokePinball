@@ -9,12 +9,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-
-	ray_on = false;
 	sensed = false;
-
-	//map
-
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -24,11 +19,12 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start()
 {
 	
+	bool ret = true;
 
 	circle = App->textures->Load("pinball/Pokeball.png"); 
-	bonus_fx = App->audio->LoadFx("changed because sound is anoying");
+	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 	right_light = App->textures->Load("pinball/right_light.png");
-	//sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
+	sensor = App->physics->CreateRectangleSensor(50,100, SCREEN_WIDTH, 50);
 
 	map = App->textures->Load("pinball/Map.png");
 	
@@ -110,23 +106,7 @@ bool ModuleSceneIntro::Start()
 	return true;
 }
 
-update_status ModulePhysics::PreUpdate()
-{
-	world->Step(1.0f / 60.0f, 6, 2);
 
-	for (b2Contact* c = world->GetContactList(); c; c = c->GetNext())
-	{
-		if (c->GetFixtureA()->IsSensor() && c->IsTouching())
-		{
-			PhysBody* pb1 = (PhysBody*)c->GetFixtureA()->GetBody()->GetUserData();
-			PhysBody* pb2 = (PhysBody*)c->GetFixtureA()->GetBody()->GetUserData();
-			if (pb1 && pb2 && pb1->listener)
-				pb1->listener->OnCollision(pb1, pb2);
-		}
-	}
-
-	return UPDATE_CONTINUE;
-}
 
 // Load assets
 bool ModuleSceneIntro::CleanUp()
@@ -148,6 +128,7 @@ update_status ModuleSceneIntro::Update()
 
 	if (pokeball == true) {
 		circles = App->physics->CreateCircle(570, 870, 22, b2_dynamicBody);
+		circles->listener = this;//clean
 		pokeball = false;
 	}
 		int ballx, bally;
@@ -159,42 +140,18 @@ update_status ModuleSceneIntro::Update()
 		pokeball = true;
 	}
 
-		App->renderer->Blit(circle, ballx - 6, bally - 7, NULL, 1.0f, circles->GetRotation());
-
-	// Prepare for raycast ------------------------------------------------------
-	
-	iPoint mouse;
-	mouse.x = App->input->GetMouseX();
-	mouse.y = App->input->GetMouseY();
-	int ray_hit = ray.DistanceTo(mouse);
-
-	fVector normal(0.0f, 0.0f);
-
-	// ray -----------------
-	if(ray_on == true)
-	{
-		fVector destination(mouse.x-ray.x, mouse.y-ray.y);
-		destination.Normalize();
-		destination *= ray_hit;
-
-		App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
-
-		if(normal.x != 0.0f)
-			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
-	}
+		App->renderer->Blit(circle, ballx - 6, bally - 7, NULL, 1.0f, circles->GetRotation());	
 
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	int x, y;
 
-	App->audio->PlayFx(bonus_fx);
-
-	if (bodyA->body == right_bounce->body && bodyB->body == circles->body)
+	if (bodyA->body == right_triangle->body || bodyB->body == right_triangle->body)
 	{
-		App->renderer->Blit(right_light, 415, 718, NULL, 0.1f, right_bounce->GetRotation());
+		b2Vec2 coord = right_triangle->body->GetPosition();
+		circle = App->textures->Load("pinball/map.png");
 	}
 
 }

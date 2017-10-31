@@ -46,6 +46,24 @@ bool ModulePhysics::Start()
 	return UPDATE_CONTINUE;
 }
 
+update_status ModulePhysics::PreUpdate()
+{
+	world->Step(1.0f / 60.0f, 6, 2);
+
+	for (b2Contact* c = world->GetContactList(); c; c = c->GetNext())
+	{
+		if (c->GetFixtureA()->IsSensor() && c->IsTouching())
+		{
+			PhysBody* pb1 = (PhysBody*)c->GetFixtureA()->GetBody()->GetUserData();
+			PhysBody* pb2 = (PhysBody*)c->GetFixtureA()->GetBody()->GetUserData();
+			if (pb1 && pb2 && pb1->listener)
+				pb1->listener->OnCollision(pb1, pb2);
+		}
+	}
+
+	return UPDATE_CONTINUE;
+}
+
 update_status ModulePhysics::Update() {
 
 
@@ -117,7 +135,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	fixture.shape = &box;
 	fixture.density = 1.0f;
 	fixture.isSensor = true;
-
+	
 	b->CreateFixture(&fixture);
 
 	PhysBody* pbody = new PhysBody();
@@ -172,13 +190,6 @@ update_status ModulePhysics::PostUpdate()
 	if(!debug)
 		return UPDATE_CONTINUE;
 
-
-	
-	// Bonus code: this will iterate all objects in the world and draw the circles
-	// You need to provide your own macro to translate meters to pixels
-	b2Vec2 mouse_position(App->input->GetMouseX(), App->input->GetMouseY());
-	mouse_position.x = PIXEL_TO_METERS(mouse_position.x);
-	mouse_position.y = PIXEL_TO_METERS(mouse_position.y);
 	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 	{
 		for(b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
@@ -245,16 +256,6 @@ update_status ModulePhysics::PostUpdate()
 					App->renderer->DrawLine(METERS_TO_PIXELS(v1.x), METERS_TO_PIXELS(v1.y), METERS_TO_PIXELS(v2.x), METERS_TO_PIXELS(v2.y), 100, 100, 255);
 				}
 				break;
-			}
-
-			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
-				if (f->GetShape()->TestPoint(b->GetTransform(), mouse_position)) {
-					// test if the current body contains mouse position
-					if (body_clicked == nullptr) {
-						body_clicked = b;
-					}
-				}
-			
 			}
 		}
 	}

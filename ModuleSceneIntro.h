@@ -31,7 +31,7 @@ public:
 
 	PhysBody* sensor;
 	bool sensed;
-	bool pokeball = true;;
+	bool pokeball = true;
 
 	SDL_Texture* circle;
 	SDL_Texture* right_light;
