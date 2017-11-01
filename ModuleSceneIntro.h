@@ -26,6 +26,8 @@ public:
 	PhysBody* right_triangle;
 	PhysBody* left_bounce;
 	PhysBody* right_bounce;
+	PhysBody* left_button;
+	PhysBody* right_button;
 	PhysBody* shelder1;
 	PhysBody* shelder2;
 	PhysBody* shelder3;
@@ -40,7 +42,7 @@ public:
 
 	private:
 		
-		bool s1, s2, s3, b1, b2;
+		bool s1, s2, s3, t1, t2, b1, b2;
 
 		SDL_Texture* map;
 
@@ -62,4 +64,24 @@ public:
 		Animation* current_left;
 		Animation left;
 		Animation left_light;
+
+		SDL_Rect* slowbro;
+		Animation* current_slow;
+		Animation slow;
+		//Animation bro;
+
+		SDL_Rect* cloyster;
+		Animation* current_cloy;
+		Animation cloy;
+		//Animation ster;
+
+		SDL_Rect* left_button_rect;
+		Animation* current_left_butt;
+		Animation left_butt;
+		Animation left_on;
+
+		SDL_Rect* right_button_rect;
+		Animation* current_right_butt;
+		Animation right_butt;
+		Animation right_on;
 };

@@ -17,6 +17,20 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Modul
 
 	left.PushBack({ 119,711,51,95 });
 	left_light.PushBack({ 575,1656,51,95 });
+
+	slow.PushBack({279,1095,82,109});
+	slow.PushBack({368,1095,81,109 });
+	slow.speed = 0.03f;
+
+	cloy.PushBack({728,1098,81,102});
+	cloy.PushBack({816,1098,78,102});
+	cloy.speed = 0.03f;
+
+	right_butt.PushBack({ 758,1255,47,34 });
+	right_on.PushBack({ 813,1255,47,34 });
+
+	left_butt.PushBack({ 487,1255,47,34 });
+	left_on.PushBack({ 541,1255,47,34 });
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -32,7 +46,7 @@ bool ModuleSceneIntro::Start()
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 	sensor = App->physics->CreateRectangleSensor(50,100, SCREEN_WIDTH, 50);
 
-	map = App->textures->Load("pinball/Map.png");
+	map = App->textures->Load("pinball/Map1.png");
 
 	int pinball_map[134] = {
 		0, 0,
@@ -157,12 +171,12 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(map, METERS_TO_PIXELS(pos_shelder3.x) - 27, METERS_TO_PIXELS(pos_shelder3.y) - 27, shelder1_3);
 
 	//Bouncers
-	if (b1)
+	if (t1)
 		current_right = &right_light;
 	else
 		current_right = &right;
 
-	if (b2)
+	if (t2)
 		current_left = &left_light;
 	else
 		current_left = &left;
@@ -173,9 +187,36 @@ update_status ModuleSceneIntro::Update()
 	left_triangl = &current_left->GetCurrentFrame();
 	App->renderer->Blit(map, 119, 711, left_triangl);
 
+	//Slowbro
+	current_slow = &slow;
+	slowbro = &current_slow->GetCurrentFrame();
+	App->renderer->Blit(map, 81, 323, slowbro);
+
+	//Cloyster
+	current_cloy = &cloy;
+	cloyster = &current_cloy->GetCurrentFrame();
+	App->renderer->Blit(map, 381, 303, cloyster);
+
+	//Buttons
+	if (b1)
+		current_right_butt = &right_on;
+	else
+		current_right_butt = &right_butt;
+
+	if (b2)
+		current_left_butt = &left_on;
+	else
+		current_left_butt = &left_butt;
+
+	right_button_rect = &current_right_butt->GetCurrentFrame();
+	App->renderer->Blit(map, 378, 490, right_button_rect);
+
+	left_button_rect = &current_left_butt->GetCurrentFrame();
+	App->renderer->Blit(map, 120, 490, left_button_rect);
+
 	//Pokeball
 	if (pokeball == true) {
-		circles = App->physics->CreateCircle(570, 870, 22, b2_dynamicBody);
+		circles = App->physics->CreateCircle(570, 870, 17, b2_dynamicBody);
 		circles->listener = this;//clean
 		pokeball = false;
 	}
@@ -188,18 +229,23 @@ update_status ModuleSceneIntro::Update()
 		pokeball = true;
 	}
 
-		App->renderer->Blit(circle, ballx - 6, bally - 7, NULL, 1.0f, circles->GetRotation());	
+		App->renderer->Blit(circle, ballx - 10, bally - 11, NULL, 1.0f, circles->GetRotation());	
 
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	s1 = false;
-	s2 = false;
-	s3 = false;
-	b1 = false;
-	b2 = false;
+	if (bodyA != nullptr && bodyB != nullptr)
+	{
+		s1 = false;
+		s2 = false;
+		s3 = false;
+		t1 = false;
+		t2 = false;
+		b1 = false;
+		b2 = false;
+	}
 
 	if (bodyA->body == shelder1->body && bodyB->body == circles->body || bodyB->body == shelder1->body && bodyA->body == circles->body)
 	{
@@ -218,10 +264,20 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	if (bodyA->body == right_bounce->body && bodyB->body == circles->body || bodyB->body == right_bounce->body && bodyA->body == circles->body)
 	{
+		t1 = true;
+	}
+
+	if (bodyA->body == left_bounce->body && bodyB->body == circles->body || bodyB->body == left_bounce->body && bodyA->body == circles->body)
+	{
+		t2 = true;
+	}
+
+	if (bodyA->body == right_button->body && bodyB->body == circles->body || bodyB->body == right_button->body && bodyA->body == circles->body)
+	{
 		b1 = true;
 	}
-	
-	if (bodyA->body == left_bounce->body && bodyB->body == circles->body || bodyB->body == left_bounce->body && bodyA->body == circles->body)
+
+	if (bodyA->body == left_button->body && bodyB->body == circles->body || bodyB->body == left_button->body && bodyA->body == circles->body)
 	{
 		b2 = true;
 	}
@@ -445,6 +501,30 @@ void ModuleSceneIntro::CreateMapObstacles() {
 	right_bounce = App->physics->CreateChain(0, 0, right_bounce_pixels, 6, b2_staticBody);
 	right_bounce->listener = this;
 	right_bounce->body->GetFixtureList()->SetRestitution(1.5f);
+
+	//left button
+
+	int left_button_pixels[6] = {
+		138, 501,
+		131, 525,
+		165, 509,
+
+	};
+
+	left_button = App->physics->CreateChain(0, 0, left_button_pixels, 6, b2_staticBody);
+	left_button->listener = this;
+
+	//right button
+
+	int right_button_pixels[6] = {
+		404, 495,
+		379, 509,
+		410, 524,
+
+	};
+
+	right_button = App->physics->CreateChain(0, 0, right_button_pixels, 6, b2_staticBody);
+	right_button->listener = this;
 
 	//shelder
 	current_shelder1 = &shelder;
