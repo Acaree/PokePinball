@@ -9,7 +9,14 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	sensed = false;
+	shelder.PushBack({ 857, 228, 54, 55 });
+	shelder_bounce.PushBack({ 680, 1034, 55, 47 });
+
+	right.PushBack({ 374,711, 51, 95 });
+	right_light.PushBack({ 881,1656,51,95 });
+
+	left.PushBack({ 119,711,51,95 });
+	left_light.PushBack({ 575,1656,51,95 });
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -23,12 +30,9 @@ bool ModuleSceneIntro::Start()
 
 	circle = App->textures->Load("pinball/Pokeball.png"); 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
-	right_light = App->textures->Load("pinball/right_light.png");
 	sensor = App->physics->CreateRectangleSensor(50,100, SCREEN_WIDTH, 50);
 
 	map = App->textures->Load("pinball/Map.png");
-	
-	shelder_png = App->textures->Load("pinball/shelder.png");
 
 	int pinball_map[134] = {
 		0, 0,
@@ -101,6 +105,7 @@ bool ModuleSceneIntro::Start()
 	};
 
 	PhysBody* body_map = App->physics->CreateChain(0, 0, pinball_map, 134, b2_staticBody);
+
 	CreateMapObstacles();
 
 	return true;
@@ -120,12 +125,55 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 
-	App->renderer->Blit(map, 0, 0, NULL, 0, 0);
-	App->renderer->Blit(shelder_png, 176, 211, NULL, 1.0f);
-	App->renderer->Blit(shelder_png, 241, 161, NULL, 1.0f);
-	App->renderer->Blit(shelder_png, 306, 211, NULL, 1.0f);
-	
 
+	App->renderer->Blit(map, 0, 0, NULL, 0, 0);
+
+	//Shelders
+	if (s1)
+		current_shelder1 = &shelder_bounce;
+	else
+		current_shelder1 = &shelder;
+
+	if (s2)
+		current_shelder2 = &shelder_bounce;
+	else
+		current_shelder2 = &shelder;
+
+	if (s3)
+		current_shelder3 = &shelder_bounce;
+	else
+		current_shelder3 = &shelder;
+
+	shelder1_1 = &current_shelder1->GetCurrentFrame();
+	b2Vec2 pos_shelder1 = shelder1->body->GetPosition();
+	App->renderer->Blit(map, METERS_TO_PIXELS(pos_shelder1.x) - 27, METERS_TO_PIXELS(pos_shelder1.y) - 27, shelder1_1);
+
+	shelder1_2 = &current_shelder2->GetCurrentFrame();
+	b2Vec2 pos_shelder2 = shelder2->body->GetPosition();
+	App->renderer->Blit(map, METERS_TO_PIXELS(pos_shelder2.x) - 27, METERS_TO_PIXELS(pos_shelder2.y) - 27, shelder1_2);
+
+	shelder1_3 = &current_shelder3->GetCurrentFrame();
+	b2Vec2 pos_shelder3 = shelder3->body->GetPosition();
+	App->renderer->Blit(map, METERS_TO_PIXELS(pos_shelder3.x) - 27, METERS_TO_PIXELS(pos_shelder3.y) - 27, shelder1_3);
+
+	//Bouncers
+	if (b1)
+		current_right = &right_light;
+	else
+		current_right = &right;
+
+	if (b2)
+		current_left = &left_light;
+	else
+		current_left = &left;
+
+	right_triangl = &current_right->GetCurrentFrame();
+	App->renderer->Blit(map, 374, 711, right_triangl);
+
+	left_triangl = &current_left->GetCurrentFrame();
+	App->renderer->Blit(map, 119, 711, left_triangl);
+
+	//Pokeball
 	if (pokeball == true) {
 		circles = App->physics->CreateCircle(570, 870, 22, b2_dynamicBody);
 		circles->listener = this;//clean
@@ -135,7 +183,7 @@ update_status ModuleSceneIntro::Update()
 		circles->GetPosition(ballx, bally);
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || circles->body->GetPosition().y >= 0.02*1025)
 	{
-		App->renderer->Blit(right_light, 415, 718, NULL, 0.1f, right_bounce->GetRotation());
+		//App->renderer->Blit(right_light, 415, 718, NULL, 0.1f, right_bounce->GetRotation());
 		circles->body->DestroyFixture(circles->body->GetFixtureList());
 		pokeball = true;
 	}
@@ -147,13 +195,36 @@ update_status ModuleSceneIntro::Update()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	s1 = false;
+	s2 = false;
+	s3 = false;
+	b1 = false;
+	b2 = false;
 
-	if (bodyA->body == right_triangle->body || bodyB->body == right_triangle->body)
+	if (bodyA->body == shelder1->body && bodyB->body == circles->body || bodyB->body == shelder1->body && bodyA->body == circles->body)
 	{
-		b2Vec2 coord = right_triangle->body->GetPosition();
-		circle = App->textures->Load("pinball/map.png");
+		s1 = true;
 	}
 
+	if (bodyA->body == shelder2->body && bodyB->body == circles->body || bodyB->body == shelder2->body && bodyA->body == circles->body)
+	{
+		s2 = true;
+	}
+
+	if (bodyA->body == shelder3->body && bodyB->body == circles->body || bodyB->body == shelder3->body && bodyA->body == circles->body)
+	{
+		s3 = true;
+	}
+
+	if (bodyA->body == right_bounce->body && bodyB->body == circles->body || bodyB->body == right_bounce->body && bodyA->body == circles->body)
+	{
+		b1 = true;
+	}
+	
+	if (bodyA->body == left_bounce->body && bodyB->body == circles->body || bodyB->body == left_bounce->body && bodyA->body == circles->body)
+	{
+		b2 = true;
+	}
 }
 
 void ModuleSceneIntro::CreateMapObstacles() {
@@ -347,6 +418,7 @@ void ModuleSceneIntro::CreateMapObstacles() {
 	};
 
 	right_triangle = App->physics->CreateChain(0, 0, right_triangle_pixels, 8, b2_staticBody);
+	right_triangle->listener = this;
 
 	//left_bounce
 
@@ -358,7 +430,7 @@ void ModuleSceneIntro::CreateMapObstacles() {
 	};
 
 	left_bounce = App->physics->CreateChain(0, 0, left_bounce_pixels, 6, b2_staticBody);
-
+	left_bounce->listener = this;
 	left_bounce->body->GetFixtureList()->SetRestitution(1.5f);
 
 	//right_bounce
@@ -371,15 +443,22 @@ void ModuleSceneIntro::CreateMapObstacles() {
 	};
 
 	right_bounce = App->physics->CreateChain(0, 0, right_bounce_pixels, 6, b2_staticBody);
-
+	right_bounce->listener = this;
 	right_bounce->body->GetFixtureList()->SetRestitution(1.5f);
 
 	//shelder
-
+	current_shelder1 = &shelder;
 	shelder1 = App->physics->CreateCircle(204, 238, 10.0f, b2_staticBody);
-	shelder2 = App->physics->CreateCircle(269, 188, 10.0f, b2_staticBody);
-	shelder3 = App->physics->CreateCircle(334, 238, 10.0f, b2_staticBody);
 	shelder1->body->GetFixtureList()->SetRestitution(1.5f);
+	shelder1->listener = this;
+
+	current_shelder2 = &shelder;
+	shelder2 = App->physics->CreateCircle(269, 188, 10.0f, b2_staticBody);
 	shelder2->body->GetFixtureList()->SetRestitution(1.5f);
+	shelder2->listener = this;
+
+	current_shelder3 = &shelder;
+	shelder3 = App->physics->CreateCircle(334, 238, 10.0f, b2_staticBody);
 	shelder3->body->GetFixtureList()->SetRestitution(1.5f);
+	shelder3->listener = this;
 }

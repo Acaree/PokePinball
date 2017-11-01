@@ -3,6 +3,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "Globals.h"
+#include "Animation.h"
 #include "Box2D/Box2D/Box2D.h"
 
 class PhysBody;
@@ -30,18 +31,35 @@ public:
 	PhysBody* shelder3;
 
 	PhysBody* sensor;
-	bool sensed;
 	bool pokeball = true;
 
 	SDL_Texture* circle;
-	SDL_Texture* right_light;
-	SDL_Texture* rick;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
 
 	private:
 		
+		bool s1, s2, s3, b1, b2;
+
 		SDL_Texture* map;
-		SDL_Texture* shelder_png;
+
+		SDL_Rect* shelder1_1;
+		SDL_Rect* shelder1_2;
+		SDL_Rect* shelder1_3;
+		Animation* current_shelder1;
+		Animation* current_shelder2;
+		Animation* current_shelder3;
+		Animation shelder;
+		Animation shelder_bounce;
+
+		SDL_Rect* right_triangl;
+		Animation* current_right;
+		Animation right;
+		Animation right_light;
+
+		SDL_Rect* left_triangl;
+		Animation* current_left;
+		Animation left;
+		Animation left_light;
 };
