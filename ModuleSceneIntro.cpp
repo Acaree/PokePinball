@@ -74,9 +74,6 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Modul
 	right_arrow.PushBack({792,1414,51,85 });
 	right_arrow.PushBack({792,1523,51,85 });
 	right_arrow.speed = 0.05f;
-
-	//up.PushBack({ 612,1132,48,44 });
-	//down.PushBack({612,1177,48,44});
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -97,9 +94,11 @@ bool ModuleSceneIntro::Start()
 	poliwag = App->audio->LoadFx("pinball/fx/poliwag.wav");
 	psyduck = App->audio->LoadFx("pinball/fx/psyduck.wav");
 	shelders = App->audio->LoadFx("pinball/fx/shelder.wav");
+	dook_down = App->audio->LoadFx("pinball/fx/dook_down.wav");
+	dook_up = App->audio->LoadFx("pinball/fx/dook_up.wav");
 
 	circle = App->textures->Load("pinball/sprites/Pokeball.png"); 
-	screen = App->textures->Load("pinball/maps/bonuses.png");
+	screen_sprite = App->textures->Load("pinball/maps/Screen_states.png");
 	map = App->textures->Load("pinball/maps/Map.png");
 
 	int pinball_map[134] = {
@@ -175,6 +174,7 @@ bool ModuleSceneIntro::Start()
 	PhysBody* body_map = App->physics->CreateChain(0, 0, pinball_map, 134, b2_staticBody);
 	CreateMapObstacles();
 	UI_Space= { 0, 0, SCREEN_WIDTH, 25};
+	screen = screen_start;
 
 	return true;
 }
@@ -288,19 +288,19 @@ update_status ModuleSceneIntro::Update()
 	if (se) {
 		circles->body->GetLinearVelocity();
 		if (circles->body->GetLinearVelocity().y > 0)
-			circles->body->SetLinearVelocity(b2Vec2(0, 20));
+			circles->body->SetLinearVelocity(b2Vec2(-3, 10));
 		else
-			circles->body->SetLinearVelocity(b2Vec2(1, -5));
+			circles->body->SetLinearVelocity(b2Vec2(2, -15));
 
 	}
 
 	if (ss) {
-			circles->body->SetLinearVelocity(b2Vec2(-20, 0));
+			circles->body->SetLinearVelocity(b2Vec2(10, 0));
 
 	}
 
 	if (sc) {
-			circles->body->SetLinearVelocity(b2Vec2(20, 0));
+			circles->body->SetLinearVelocity(b2Vec2(-10, 0));
 	}
 
 	if (sp) {
@@ -384,8 +384,6 @@ update_status ModuleSceneIntro::Update()
 	right_arrows = &current_right_arr->GetCurrentFrame();
 	App->renderer->Blit(map, 388, 534, right_arrows);
 
-
-
 	//Pokeball
 	if (pokeball == true) {
 		circles = App->physics->CreateCircle(570, 870, 17, b2_dynamicBody);
@@ -396,28 +394,32 @@ update_status ModuleSceneIntro::Update()
 		circles->GetPosition(ballx, bally);
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || circles->body->GetPosition().y >= 0.02*1025)
 	{
-		//App->renderer->Blit(right_light, 415, 718, NULL, 0.1f, right_bounce->GetRotation());
 		circles->body->DestroyFixture(circles->body->GetFixtureList());
+		a = false;
+		v = false;
+		sh1 = false;
+		sh2 = false;
+		sh3 = false;
 		if (App->player->lifes > 0) {
 			App->player->lifes -= 1;
 		}
+		if (App->player->lifes == 0){
+			screen = screen_gameover;
+		}
 		pokeball = true;
 	}
-	////Up-down arrow
-	//if (circles->body->GetWorldPoint().y > 357)
-	//	current_up_down = &up;
-	//else
-	//	current_up_down = &down;
-
-	//up_down = &current_up_down->GetCurrentFrame();
-	//App->renderer->Blit(map,251,343,up_down);
-
 
 		App->renderer->Blit(circle, ballx - 10, bally - 11, NULL, 1.0f, circles->GetRotation());	
 		App->renderer->DrawQuad(UI_Space, 0, 0, 0, 255);
 
 	if(App->input->GetKey(SDL_SCANCODE_Q)==KEY_DOWN|| App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		App->audio->PlayFx(flipper);
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		App->audio->PlayFx(dook_down);
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
+		App->audio->PlayFx(dook_up);
 
 	//Slowbro
 	current_slow = &slow;
@@ -455,63 +457,126 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	if (bodyA->body == shelder1->body && bodyB->body == circles->body || bodyB->body == shelder1->body && bodyA->body == circles->body)
 	{
 		s1 = true;
-		App->UI->score += 500;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 500 * 5;
+		else if(sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 500 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 500 * 2;
+		else
+			App->UI->score += 500;
 		App->audio->PlayFx(shelders);
 	}
 
 	if (bodyA->body == shelder2->body && bodyB->body == circles->body || bodyB->body == shelder2->body && bodyA->body == circles->body)
 	{
 		s2 = true;
-		App->UI->score += 500;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 500 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 500 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 500 * 2;
+		else
+			App->UI->score += 500;
 		App->audio->PlayFx(shelders);
 	}
 
 	if (bodyA->body == shelder3->body && bodyB->body == circles->body || bodyB->body == shelder3->body && bodyA->body == circles->body)
 	{
 		s3 = true;
-		App->UI->score += 500;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 500 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 500 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 500 * 2;
+		else
+			App->UI->score += 500;
 		App->audio->PlayFx(shelders);
 	}
 
 	if (bodyA->body == right_bounce->body && bodyB->body == circles->body || bodyB->body == right_bounce->body && bodyA->body == circles->body)
 	{
 		t1 = true;
-		App->UI->score += 300;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 300 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 300 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 300 * 2;
+		else
+			App->UI->score += 300;
 		App->audio->PlayFx(bouncer);
 	}
 
 	if (bodyA->body == left_bounce->body && bodyB->body == circles->body || bodyB->body == left_bounce->body && bodyA->body == circles->body)
 	{
 		t2 = true;
-		App->UI->score += 300;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 300 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 300 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 300 * 2;
+		else
+			App->UI->score += 300;
 		App->audio->PlayFx(bouncer);
 	}
 
 	if (bodyA->body == right_button->body && bodyB->body == circles->body || bodyB->body == right_button->body && bodyA->body == circles->body)
 	{
 		b1 = true;
-		App->UI->score += 100;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 100 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 100 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 100 * 2;
+		else
+			App->UI->score += 100;
 		App->audio->PlayFx(buttons);
 	}
 
 	if (bodyA->body == left_button->body && bodyB->body == circles->body || bodyB->body == left_button->body && bodyA->body == circles->body)
 	{
 		b2 = true;
-		App->UI->score += 100;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 100 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 100 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 100 * 2;
+		else
+			App->UI->score += 100;
 		App->audio->PlayFx(buttons);
 	}
 
 	if (bodyA->body == poliwag_button->body && bodyB->body == circles->body || bodyB->body == poliwag_button->body && bodyA->body == circles->body)
 	{
 		pb = true;
-		App->UI->score += 200;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 200 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 200 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 200 * 2;
+		else
+			App->UI->score += 200;
 		App->audio->PlayFx(poliwag);
 	}
 
 	if (bodyA->body == psyduck_button->body && bodyB->body == circles->body || bodyB->body == psyduck_button->body && bodyA->body == circles->body)
 	{
 		ps = true;
-		App->UI->score += 200;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 200 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 200 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 200 * 2;
+		else
+			App->UI->score += 200;
 		App->audio->PlayFx(psyduck);
 	}
 
@@ -523,32 +588,69 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	if (bodyA->body == sensor_slow->body && bodyB->body == circles->body || bodyB->body == sensor_slow->body && bodyA->body == circles->body)
 	{
 		ss = true;
-		App->UI->score += 1000;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 1000 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 1000 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 1000 * 2;
+		else
+			App->UI->score += 1000;
 	}
 
 	if (bodyA->body == sensor_cloy->body && bodyB->body == circles->body || bodyB->body == sensor_cloy->body && bodyA->body == circles->body)
 	{
 		sc = true;
-		App->UI->score += 1000;
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 1000 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 1000 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 1000 * 2;
+		else
+			App->UI->score += 1000;
 	}
 
 	if (bodyA->body == sensor_pika->body && bodyB->body == circles->body || bodyB->body == sensor_pika->body && bodyA->body == circles->body)
 	{
 		sp = true;
-		App->UI->score += 1000;
+
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 1000 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 1000 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 1000 * 2;
+		else
+			App->UI->score += 1000;
+
 		App->audio->PlayFx(pika);
 	}
 
 	if (bodyA->body == sensor_pika2->body && bodyB->body == circles->body || bodyB->body == sensor_pika2->body && bodyA->body == circles->body)
 	{
 		sp2 = true;
-		App->UI->score += 1000;
+
+		if (sh1 == true && sh2 == true && sh3 == true && a == true && v == true)
+			App->UI->score += 1000 * 5;
+		else if (sh1 == true && sh2 == true && sh3 == true)
+			App->UI->score += 1000 * 3;
+		else if (a == true && v == true)
+			App->UI->score += 1000 * 2;
+		else
+			App->UI->score += 1000;
+
 		App->audio->PlayFx(pika);
 	}
 
 	if (bodyA->body == sensor_c->body && bodyB->body == circles->body || bodyB->body == sensor_c->body && bodyA->body == circles->body)
 	{
 		c = true;
+		if (e == true) {
+			App->player->lifes += 1;
+			c = false;
+			e = false;
+		}
 	}
 
 	if (bodyA->body == sensor_a->body && bodyB->body == circles->body || bodyB->body == sensor_a->body && bodyA->body == circles->body)
@@ -564,6 +666,11 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	if (bodyA->body == sensor_e->body && bodyB->body == circles->body || bodyB->body == sensor_e->body && bodyA->body == circles->body)
 	{
 		e = true;
+		if (c == true) {
+			App->player->lifes += 1;
+			c = false;
+			e = false;
+		}
 	}
 
 	if (bodyA->body == sensor_sh1->body && bodyB->body == circles->body || bodyB->body == sensor_sh1->body && bodyA->body == circles->body)

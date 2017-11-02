@@ -6,6 +6,16 @@
 #include "Animation.h"
 #include "Box2D/Box2D/Box2D.h"
 
+enum screen_state {
+	screen_start = 1,
+	screen_x1,
+	screen_x2,
+	screen_x3,
+	screen_x5,
+	screen_extralife,
+	screen_gameover
+};
+
 class PhysBody;
 
 class ModuleSceneIntro : public Module, public b2ContactListener
@@ -59,16 +69,20 @@ public:
 	uint poliwag;
 	uint psyduck;
 	uint shelders;
+	uint dook_down;
+	uint dook_up;
 
 	p2Point<int> ray;
 	bool ray_on;
+
+	screen_state screen;
 
 	private:
 		
 		bool s1, s2, s3, t1, t2, b1, b2, pb, ps, se, ss, sc, sp, sp2, c, a, v, e, sh1, sh2, sh3;
 
 		SDL_Texture* map;
-		SDL_Texture* screen;
+		SDL_Texture* screen_sprite;
 
 		SDL_Rect* shelder1_1;
 		SDL_Rect* shelder1_2;
@@ -92,12 +106,10 @@ public:
 		SDL_Rect* slowbro;
 		Animation* current_slow;
 		Animation slow;
-		//Animation bro;
 
 		SDL_Rect* cloyster;
 		Animation* current_cloy;
 		Animation cloy;
-		//Animation ster;
 
 		SDL_Rect* left_button_rect;
 		Animation* current_left_butt;
@@ -164,8 +176,4 @@ public:
 		Animation* current_right_arr;
 		Animation right_arrow;
 
-		//SDL_Rect* up_down;
-		//Animation* current_up_down;
-		//Animation up;
-		//Animation down;
 };
