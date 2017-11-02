@@ -174,7 +174,7 @@ bool ModuleSceneIntro::Start()
 
 	PhysBody* body_map = App->physics->CreateChain(0, 0, pinball_map, 134, b2_staticBody);
 	CreateMapObstacles();
-	UI_Space= { 0, 0, SCREEN_WIDTH, 50};
+	UI_Space= { 0, 0, SCREEN_WIDTH, 25};
 
 	return true;
 }

@@ -19,6 +19,8 @@ struct Font
 class ModuleUI : public Module
 {
 private:
+	SDL_Texture* lifes_icon;
+	SDL_Rect pokeball_lifes;
 	Font	 fonts[MAX_FONTS];
 public:
 	ModuleUI(Application* app, bool start_enabled = true);
