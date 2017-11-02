@@ -102,22 +102,36 @@ update_status ModulePlayer::Update()
 	left_flipper->body->ApplyForce(b2Vec2(0, -2), b2Vec2(0, 0), true);
 	right_flipper->body->ApplyForce(b2Vec2(0, 2), b2Vec2(0, 0), true);
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
-	{
-		bouncy->body->ApplyForce(b2Vec2(0, 10), b2Vec2(0, 0), true);
+	if (App->scene_intro->screen != screen_start && App->scene_intro->screen != screen_gameover) {
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+		{
+			bouncy->body->ApplyForce(b2Vec2(0, 10), b2Vec2(0, 0), true);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
+		{
+			bouncy->body->ApplyForce(b2Vec2(0, -1250), b2Vec2(0, 0), true);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			joint_left_flipper->GetBodyA()->ApplyAngularImpulse(-7, true);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			joint_right_flipper->GetBodyA()->ApplyAngularImpulse(7, true);
+		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
-	{
-		bouncy->body->ApplyForce(b2Vec2(0, -1250), b2Vec2(0, 0), true);
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+		if(App->scene_intro->screen == screen_gameover)
+		App->scene_intro->screen = screen_start;
+		
+		else if (App->scene_intro->screen == screen_start)
+			App->scene_intro->screen = screen_x1;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-		joint_left_flipper->GetBodyA()->ApplyAngularImpulse(-7, true);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		joint_right_flipper->GetBodyA()->ApplyAngularImpulse(7, true);
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN) {
+		App->scene_intro->screen = screen_gameover;
 	}
 
 	return UPDATE_CONTINUE;
