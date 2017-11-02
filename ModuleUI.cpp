@@ -21,7 +21,7 @@ ModuleUI::~ModuleUI()
 
 bool ModuleUI::Start() {
 	bool ret = true;
-	font_score=Load("pinball/fonts.png", "0123456789", 1);
+	font_score=Load("pinball/fonts.png", "0123456789o", 1);
 	score = 0;
 	return ret;
 }
@@ -34,9 +34,12 @@ bool ModuleUI::CleanUp() {
 
 update_status ModuleUI::Update() {
 
-	char str[10];
-	sprintf_s(str, "%i", score);
-	BlitText(0, 0, font_score, str);
+	char score_array[10];
+	char lifes_array[2];
+	sprintf_s(score_array, "%i", score);
+	BlitText(30, 0, font_score, score_array);
+	sprintf_s(lifes_array, "%i", App->player->lifes);
+	BlitText(SCREEN_WIDTH - 30, 0, font_score, lifes_array);
 
 	return UPDATE_CONTINUE;
 

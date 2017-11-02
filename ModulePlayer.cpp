@@ -19,6 +19,7 @@ ModulePlayer::~ModulePlayer()
 // Load assets
 bool ModulePlayer::Start()
 {
+	lifes = 3;
 	LOG("Loading player");
 	left_flipper_png = App->textures->Load("pinball/left_flipper.png");
 	right_flipper_png = App->textures->Load("pinball/right_flipper.png");
@@ -106,11 +107,6 @@ update_status ModulePlayer::Update()
 		bouncy->body->ApplyForce(b2Vec2(0, 10), b2Vec2(0, 0), true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-	{
-		App->UI->score += 10;
-	}
-
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
 		bouncy->body->ApplyForce(b2Vec2(0, -1250), b2Vec2(0, 0), true);
@@ -122,6 +118,19 @@ update_status ModulePlayer::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		joint_right_flipper->GetBodyA()->ApplyAngularImpulse(7, true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		App->UI->score += 10;
+	}
+
+
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	{
+		if (lifes < 9) {
+			App->player->lifes += 1;
+		}
 	}
 	return UPDATE_CONTINUE;
 }

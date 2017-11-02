@@ -15,6 +15,7 @@ public:
 	bool CleanUp();
 
 public:
+	uint lifes;
 	PhysBody* left_flipper_anchor;
 	PhysBody* left_flipper;
 	PhysBody* right_flipper_anchor;

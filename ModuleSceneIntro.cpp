@@ -5,7 +5,9 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
+#include "ModulePlayer.h"
 #include "ModulePhysics.h"
+#include "ModuleUI.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -119,8 +121,8 @@ bool ModuleSceneIntro::Start()
 	};
 
 	PhysBody* body_map = App->physics->CreateChain(0, 0, pinball_map, 134, b2_staticBody);
-
 	CreateMapObstacles();
+	UI_Space= { 0, 0, SCREEN_WIDTH, 50};
 
 	return true;
 }
@@ -139,7 +141,7 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 
-
+	
 	App->renderer->Blit(map, 0, 0, NULL, 0, 0);
 
 	//Shelders
@@ -226,10 +228,14 @@ update_status ModuleSceneIntro::Update()
 	{
 		//App->renderer->Blit(right_light, 415, 718, NULL, 0.1f, right_bounce->GetRotation());
 		circles->body->DestroyFixture(circles->body->GetFixtureList());
+		if (App->player->lifes > 0) {
+			App->player->lifes -= 1;
+		}
 		pokeball = true;
 	}
 
 		App->renderer->Blit(circle, ballx - 10, bally - 11, NULL, 1.0f, circles->GetRotation());	
+		App->renderer->DrawQuad(UI_Space, 0, 0, 0, 255);
 
 	return UPDATE_CONTINUE;
 }
@@ -280,6 +286,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	if (bodyA->body == left_button->body && bodyB->body == circles->body || bodyB->body == left_button->body && bodyA->body == circles->body)
 	{
 		b2 = true;
+		App->UI->score += 5;
 	}
 }
 

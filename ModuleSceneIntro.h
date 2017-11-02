@@ -35,6 +35,8 @@ public:
 	PhysBody* sensor;
 	bool pokeball = true;
 
+	SDL_Rect UI_Space;
+
 	SDL_Texture* circle;
 	uint bonus_fx;
 	p2Point<int> ray;
