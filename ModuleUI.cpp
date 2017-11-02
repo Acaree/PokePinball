@@ -21,7 +21,7 @@ ModuleUI::~ModuleUI()
 
 bool ModuleUI::Start() {
 	bool ret = true;
-	font_score=Load("pinball/fonts.png", "0123456789o", 1);
+	font_score=Load("pinball/fonts.png", "0123456789", 1);
 	score = 0;
 	return ret;
 }
