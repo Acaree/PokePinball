@@ -21,8 +21,8 @@ bool ModulePlayer::Start()
 {
 	lifes = 3;
 	LOG("Loading player");
-	left_flipper_png = App->textures->Load("pinball/left_flipper.png");
-	right_flipper_png = App->textures->Load("pinball/right_flipper.png");
+	left_flipper_png = App->textures->Load("pinball/sprites/left_flipper.png");
+	right_flipper_png = App->textures->Load("pinball/sprites/right_flipper.png");
 
 	bouncy = App->physics->CreateRectangle(572, 921, 45, 6, b2_dynamicBody);
 	pivotBouncy = App->physics->CreateRectangle(572, 944, 45, 6, b2_staticBody);
@@ -120,20 +120,5 @@ update_status ModulePlayer::Update()
 		joint_right_flipper->GetBodyA()->ApplyAngularImpulse(7, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-	{
-		App->UI->score += 10;
-	}
-
-
-	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
-	{
-		if (lifes < 9) {
-			App->player->lifes += 1;
-		}
-	}
 	return UPDATE_CONTINUE;
 }
-
-
-

@@ -51,7 +51,15 @@ public:
 	SDL_Rect UI_Space;
 
 	SDL_Texture* circle;
-	uint bonus_fx;
+	uint theme;
+	uint bouncer;
+	uint buttons;
+	uint flipper;
+	uint pika;
+	uint poliwag;
+	uint psyduck;
+	uint shelders;
+
 	p2Point<int> ray;
 	bool ray_on;
 
@@ -60,6 +68,7 @@ public:
 		bool s1, s2, s3, t1, t2, b1, b2, pb, ps, se, ss, sc, sp, sp2, c, a, v, e, sh1, sh2, sh3;
 
 		SDL_Texture* map;
+		SDL_Texture* screen;
 
 		SDL_Rect* shelder1_1;
 		SDL_Rect* shelder1_2;
@@ -137,4 +146,26 @@ public:
 		Animation* current_e;
 		Animation e_sen;
 		Animation e_sor;
+
+		SDL_Rect* sh_sensor;
+		Animation* current_sh;
+		Animation sh_sen;
+		Animation sh_sor;
+
+		SDL_Rect* left_arrows;
+		Animation* current_left_arr;
+		Animation left_arrow;
+
+		SDL_Rect* mid_arrows;
+		Animation* current_mid_arr;
+		Animation mid_arrow;
+
+		SDL_Rect* right_arrows;
+		Animation* current_right_arr;
+		Animation right_arrow;
+
+		//SDL_Rect* up_down;
+		//Animation* current_up_down;
+		//Animation up;
+		//Animation down;
 };
