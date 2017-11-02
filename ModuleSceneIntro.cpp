@@ -679,4 +679,11 @@ void ModuleSceneIntro::CreateMapObstacles() {
 	sensor_cloy = App->physics->CreateRectangleSensor(410, 354, 50, 5);
 	sensor_pika = App->physics->CreateRectangleSensor(48, 867, 50, 20);
 	sensor_pika2 = App->physics->CreateRectangleSensor(494, 867, 50, 20);
+	sensor_c = App->physics->CreateRectangleSensor(48, 745, 14, 20);
+	sensor_c = App->physics->CreateRectangleSensor(103, 745, 13, 20);
+	sensor_c = App->physics->CreateRectangleSensor(443, 745, 13, 20);
+	sensor_c = App->physics->CreateRectangleSensor(497, 745, 14, 20);
+	sensor_sh1 = App->physics->CreateRectangleSensor(191, 143, 14, 20);
+	sensor_sh2 = App->physics->CreateRectangleSensor(273, 116, 13, 20);
+	sensor_sh3 = App->physics->CreateRectangleSensor(354, 143, 14, 20);
 }

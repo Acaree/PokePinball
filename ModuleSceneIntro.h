@@ -39,6 +39,13 @@ public:
 	PhysBody* sensor_cloy;
 	PhysBody* sensor_pika;
 	PhysBody* sensor_pika2;
+	PhysBody* sensor_c;
+	PhysBody* sensor_a;
+	PhysBody* sensor_v;
+	PhysBody* sensor_e;
+	PhysBody* sensor_sh1;
+	PhysBody* sensor_sh2;
+	PhysBody* sensor_sh3;
 	bool pokeball = true;
 
 	SDL_Rect UI_Space;
@@ -50,7 +57,7 @@ public:
 
 	private:
 		
-		bool s1, s2, s3, t1, t2, b1, b2, pb, ps, se, ss, sc, sp, sp2;
+		bool s1, s2, s3, t1, t2, b1, b2, pb, ps, se, ss, sc, sp, sp2, c, a, v, e, sh1, sh2, sh3;
 
 		SDL_Texture* map;
 
@@ -110,4 +117,24 @@ public:
 		SDL_Rect* thun;
 		Animation* current_thun;
 		Animation thunder;
+
+		SDL_Rect* c_sensor;
+		Animation* current_c;
+		Animation c_sen;
+		Animation c_sor;
+
+		SDL_Rect* a_sensor;
+		Animation* current_a;
+		Animation a_sen;
+		Animation a_sor;
+
+		SDL_Rect* v_sensor;
+		Animation* current_v;
+		Animation v_sen;
+		Animation v_sor;
+
+		SDL_Rect* e_sensor;
+		Animation* current_e;
+		Animation e_sen;
+		Animation e_sor;
 };
