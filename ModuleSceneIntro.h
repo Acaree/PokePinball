@@ -31,8 +31,14 @@ public:
 	PhysBody* shelder1;
 	PhysBody* shelder2;
 	PhysBody* shelder3;
+	PhysBody* poliwag_button;
+	PhysBody* psyduck_button;
 
-	PhysBody* sensor;
+	PhysBody* sensor_center;
+	PhysBody* sensor_slow;
+	PhysBody* sensor_cloy;
+	PhysBody* sensor_pika;
+	PhysBody* sensor_pika2;
 	bool pokeball = true;
 
 	SDL_Rect UI_Space;
@@ -44,7 +50,7 @@ public:
 
 	private:
 		
-		bool s1, s2, s3, t1, t2, b1, b2;
+		bool s1, s2, s3, t1, t2, b1, b2, pb, ps, se, ss, sc, sp, sp2;
 
 		SDL_Texture* map;
 
@@ -86,4 +92,22 @@ public:
 		Animation* current_right_butt;
 		Animation right_butt;
 		Animation right_on;
+
+		SDL_Rect* poli_button;
+		Animation* current_poli_butt;
+		Animation poli_butt;
+		Animation poli_on;
+
+		SDL_Rect* psy_button;
+		Animation* current_psy_butt;
+		Animation psy_butt;
+		Animation psy_on;
+
+		SDL_Rect* pika_sensor;
+		Animation* current_pika;
+		Animation pika_sen;
+
+		SDL_Rect* thun;
+		Animation* current_thun;
+		Animation thunder;
 };

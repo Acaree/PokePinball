@@ -33,6 +33,20 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Modul
 
 	left_butt.PushBack({ 487,1255,47,34 });
 	left_on.PushBack({ 541,1255,47,34 });
+
+	poli_butt.PushBack({ 545, 1537, 20, 54 });
+	poli_on.PushBack({ 572,1537,20,54 });
+
+	psy_butt.PushBack({ 864, 1537, 37, 68 });
+	psy_on.PushBack({ 901,1537,38,64 });
+
+	pika_sen.PushBack({548,1853,54,54});
+	pika_sen.PushBack({609,1853,48,54});
+	pika_sen.speed = 0.027f;
+
+	thunder.PushBack({ 721,1866,48,41 });
+	thunder.PushBack({771,1866,48,41 });
+	thunder.speed = 0.3f;
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -46,9 +60,7 @@ bool ModuleSceneIntro::Start()
 
 	circle = App->textures->Load("pinball/Pokeball.png"); 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
-	sensor = App->physics->CreateRectangleSensor(50,100, SCREEN_WIDTH, 50);
-
-	map = App->textures->Load("pinball/Map1.png");
+	map = App->textures->Load("pinball/Map.png");
 
 	int pinball_map[134] = {
 		0, 0,
@@ -199,6 +211,14 @@ update_status ModuleSceneIntro::Update()
 	cloyster = &current_cloy->GetCurrentFrame();
 	App->renderer->Blit(map, 381, 303, cloyster);
 
+	//Pikachu
+	current_pika = &pika_sen;
+	pika_sensor = &current_pika->GetCurrentFrame();
+	App->renderer->Blit(map, 28, 834, pika_sensor);
+	App->renderer->Blit(map, 472, 834, pika_sensor);
+	current_thun = &thunder;
+	thun = &current_thun->GetCurrentFrame();
+
 	//Buttons
 	if (b1)
 		current_right_butt = &right_on;
@@ -215,6 +235,53 @@ update_status ModuleSceneIntro::Update()
 
 	left_button_rect = &current_left_butt->GetCurrentFrame();
 	App->renderer->Blit(map, 120, 490, left_button_rect);
+
+	//Poliwag red button
+	if (pb)
+		current_poli_butt = &poli_on;
+	else
+		current_poli_butt = &poli_butt;
+
+	poli_button = &current_poli_butt->GetCurrentFrame();
+	App->renderer->Blit(map, 82, 592, poli_button);
+
+	//Psyduck button
+	if (ps)
+		current_psy_butt = &psy_on;
+	else
+		current_psy_butt = &psy_butt;
+
+	psy_button = &current_psy_butt->GetCurrentFrame();
+	App->renderer->Blit(map, 426, 578, psy_button);
+
+	//Sensors
+	if (se) {
+		circles->body->GetLinearVelocity();
+		if (circles->body->GetLinearVelocity().y > 0)
+			circles->body->ApplyForce(b2Vec2(0, 20), b2Vec2(0, 10), true);
+		else
+			circles->body->ApplyForce(b2Vec2(0, -20), b2Vec2(0, 10), true);
+
+	}
+
+	if (ss) {
+			circles->body->ApplyForce(b2Vec2(-20, 0), b2Vec2(10, 10), true);
+
+	}
+
+	if (sc) {
+			circles->body->ApplyForce(b2Vec2(20, 0), b2Vec2(10, 10), true);
+	}
+
+	if (sp) {
+		circles->body->ApplyForce(b2Vec2(0, -35), b2Vec2(0, 0), true);
+		App->renderer->Blit(map, 25, 842, thun);
+	}
+
+	if (sp2) {
+		circles->body->ApplyForce(b2Vec2(0, -35), b2Vec2(0, 0), true);
+		App->renderer->Blit(map, 470, 836, thun);
+	}
 
 	//Pokeball
 	if (pokeball == true) {
@@ -251,6 +318,13 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		t2 = false;
 		b1 = false;
 		b2 = false;
+		pb = false;
+		ps = false;
+		se = false;
+		ss = false;
+		sc = false;
+		sp = false;
+		sp2 = false;
 	}
 
 	if (bodyA->body == shelder1->body && bodyB->body == circles->body || bodyB->body == shelder1->body && bodyA->body == circles->body)
@@ -287,6 +361,41 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 		b2 = true;
 		App->UI->score += 5;
+	}
+
+	if (bodyA->body == poliwag_button->body && bodyB->body == circles->body || bodyB->body == poliwag_button->body && bodyA->body == circles->body)
+	{
+		pb = true;
+	}
+
+	if (bodyA->body == psyduck_button->body && bodyB->body == circles->body || bodyB->body == psyduck_button->body && bodyA->body == circles->body)
+	{
+		ps = true;
+	}
+
+	if (bodyA->body == sensor_center->body && bodyB->body == circles->body || bodyB->body == sensor_center->body && bodyA->body == circles->body)
+	{
+		se = true;
+	}
+
+	if (bodyA->body == sensor_slow->body && bodyB->body == circles->body || bodyB->body == sensor_slow->body && bodyA->body == circles->body)
+	{
+		ss = true;
+	}
+
+	if (bodyA->body == sensor_cloy->body && bodyB->body == circles->body || bodyB->body == sensor_cloy->body && bodyA->body == circles->body)
+	{
+		sc = true;
+	}
+
+	if (bodyA->body == sensor_pika->body && bodyB->body == circles->body || bodyB->body == sensor_pika->body && bodyA->body == circles->body)
+	{
+		sp = true;
+	}
+
+	if (bodyA->body == sensor_pika2->body && bodyB->body == circles->body || bodyB->body == sensor_pika2->body && bodyA->body == circles->body)
+	{
+		sp2 = true;
 	}
 }
 
@@ -548,4 +657,26 @@ void ModuleSceneIntro::CreateMapObstacles() {
 	shelder3 = App->physics->CreateCircle(334, 238, 10.0f, b2_staticBody);
 	shelder3->body->GetFixtureList()->SetRestitution(1.5f);
 	shelder3->listener = this;
+
+	//Poliwag button
+
+	current_poli_butt = &poli_butt;
+	poliwag_button = App->physics->CreateRectangle(92, 619, 20, 54, b2_staticBody);
+	poliwag_button->body->GetFixtureList()->SetRestitution(0.5f);
+	poliwag_button->listener = this;
+
+	//Psyduck button
+
+	current_psy_butt = &psy_butt;
+	psyduck_button = App->physics->CreateRectangle(455, 608, 20, 54, b2_staticBody);
+	psyduck_button->body->GetFixtureList()->SetRestitution(0.5f);
+	psyduck_button->listener = this;
+
+	//Sensors
+
+	sensor_center = App->physics->CreateRectangleSensor(271, 354, 10, 20);
+	sensor_slow = App->physics->CreateRectangleSensor(135, 354, 50, 5);
+	sensor_cloy = App->physics->CreateRectangleSensor(410, 354, 50, 5);
+	sensor_pika = App->physics->CreateRectangleSensor(48, 867, 50, 20);
+	sensor_pika2 = App->physics->CreateRectangleSensor(494, 867, 50, 20);
 }
