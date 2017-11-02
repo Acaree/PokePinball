@@ -62,6 +62,7 @@ public:
 
 	SDL_Texture* circle;
 	uint theme;
+	uint Gameover;
 	uint bouncer;
 	uint buttons;
 	uint flipper;

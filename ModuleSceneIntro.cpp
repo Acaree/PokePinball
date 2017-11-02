@@ -111,8 +111,6 @@ bool ModuleSceneIntro::Start()
 	
 	bool ret = true;
 
-	theme = App->audio->PlayMusic("pinball/music/theme.ogg");
-
 	bouncer = App->audio->LoadFx("pinball/fx/bouncer.wav");
 	buttons = App->audio->LoadFx("pinball/fx/buttons.wav");
 	pika = App->audio->LoadFx("pinball/fx/pika.wav");
@@ -201,6 +199,8 @@ bool ModuleSceneIntro::Start()
 	CreateMapObstacles();
 	UI_Space= { 0, 0, SCREEN_WIDTH, 25};
 	screen = screen_start;
+
+
 	multiplier = 1;
 
 	return true;
@@ -415,6 +415,7 @@ update_status ModuleSceneIntro::Update()
 	switch (screen) {
 
 	case screen_start:
+		theme = App->audio->PlayMusic("pinball/music/theme.ogg");
 		current_screen = &start;
 		screens = &current_screen->GetCurrentFrame();
 		App->renderer->Blit(screen_sprite,191,565,screens);
@@ -471,6 +472,7 @@ update_status ModuleSceneIntro::Update()
 			App->player->lifes -= 1;
 		}
 		if (App->player->lifes == 0){
+			App->audio->PlayMusic("pinball/music/Gameover.ogg");
 			screen = screen_gameover;
 		}
 		pokeball = true;

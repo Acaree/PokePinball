@@ -7,6 +7,7 @@
 #include "ModulePlayer.h"
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
+#include "ModuleSceneIntro.h"
 
 #include "SDL\include\SDL.h"
 
@@ -43,6 +44,8 @@ update_status ModuleUI::Update() {
 	sprintf_s(lifes_array, "%i", App->player->lifes);
 	BlitText(SCREEN_WIDTH - 40, 0, font_score, lifes_array);
 	App->renderer->Blit(lifes_icon, SCREEN_WIDTH - 60, 0, &pokeball_lifes);
+	if (App->scene_intro->screen == screen_gameover)
+		BlitText(194, 625, font_score, score_array);
 	return UPDATE_CONTINUE;
 
 }

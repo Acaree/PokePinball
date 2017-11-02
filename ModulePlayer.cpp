@@ -86,7 +86,8 @@ bool ModulePlayer::Start()
 bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
-
+	App->textures->Unload(left_flipper_png);
+	App->textures->Unload(right_flipper_png);
 	return true;
 }
 
@@ -122,16 +123,15 @@ update_status ModulePlayer::Update()
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-		if(App->scene_intro->screen == screen_gameover)
-		App->scene_intro->screen = screen_start;
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+		if (App->scene_intro->screen == screen_gameover) {
+			App->scene_intro->screen = screen_start;
+			lifes = 3;
+			App->UI->score = 0;
+		}
 		
 		else if (App->scene_intro->screen == screen_start)
 			App->scene_intro->screen = screen_x1;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN) {
-		App->scene_intro->screen = screen_gameover;
 	}
 
 	return UPDATE_CONTINUE;
