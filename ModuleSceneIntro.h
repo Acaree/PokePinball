@@ -176,4 +176,15 @@ public:
 		Animation* current_right_arr;
 		Animation right_arrow;
 
+		SDL_Rect* screens;
+		Animation* current_screen;
+		Animation start;
+		Animation x1;
+		Animation x2;
+		Animation x3;
+		Animation x5;
+		Animation extra_life;
+		Animation game_over;
+
+		int multiplier;
 };
