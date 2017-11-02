@@ -1,3 +1,8 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(373,5): warning MSB8004: El directorio Output no termina con una barra diagonal final. Esta instancia de compilación agregará la barra diagonal porque es necesaria para que se pueda evaluar correctamente el directorio Output.
+  ModuleSceneIntro.cpp
+c:\users\alex\documents\github\pokepinball\modulesceneintro.cpp(647): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\alex\documents\github\pokepinball\modulesceneintro.cpp(652): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\alex\documents\github\pokepinball\modulesceneintro.cpp(657): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\cmath(113): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
   SDL Game.vcxproj -> C:\Users\Alex\Documents\GitHub\PokePinball\.\Game\2D Physics - class 4.exe
   SDL Game.vcxproj -> .\Game\2D Physics - class 4.pdb (Partial PDB)

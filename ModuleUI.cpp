@@ -23,6 +23,8 @@ bool ModuleUI::Start() {
 	bool ret = true;
 	font_score=Load("pinball/fonts.png", "0123456789", 1);
 	score = 0;
+	lifes_icon = App->textures->Load("pinball/pokeball_lifes.png");
+	pokeball_lifes = { 0,0, 20, 20 };
 	return ret;
 }
 
@@ -39,14 +41,16 @@ update_status ModuleUI::Update() {
 	sprintf_s(score_array, "%i", score);
 	BlitText(30, 0, font_score, score_array);
 	sprintf_s(lifes_array, "%i", App->player->lifes);
-	BlitText(SCREEN_WIDTH - 30, 0, font_score, lifes_array);
-
+	BlitText(SCREEN_WIDTH - 40, 0, font_score, lifes_array);
+	App->renderer->Blit(lifes_icon, SCREEN_WIDTH - 60, 0, &pokeball_lifes);
 	return UPDATE_CONTINUE;
 
 }
 
 int ModuleUI::Load(const char* texture_path, const char* characters, uint rows)
 {
+
+	
 	int id = -1;
 
 	if (texture_path == nullptr || characters == nullptr || rows == 0)
